@@ -123,6 +123,7 @@
 </head>
 <body>
 
+    <!-- TOP BAR + LINK SHOPEE -->
     <div class="top-mini-bar">
         <div class="top-left-zone">
             <div class="title">Sổ Thu Chi</div>
@@ -138,6 +139,7 @@
 
     <div class="sheet-container">
         
+        <!-- SHEET 1: NHẬP LIỆU -->
         <div id="sheet-input" class="excel-sheet active-sheet">
             <div class="type-btn-group">
                 <button type="button" id="btn-expense" class="type-btn">Chi Tiêu (-)</button>
@@ -192,6 +194,7 @@
             </form>
         </div>
 
+        <!-- SHEET 2: TỔNG QUAN -->
         <div id="sheet-report" class="excel-sheet">
             <div class="scrollable-report-wrapper">
                 <div class="filter-panel">
@@ -220,6 +223,7 @@
                     </div>
                 </div>
 
+                <!-- BANNER THÔNG TIN NGÀY CHI NHIỀU NHẤT -->
                 <div class="insight-banner">
                     <span>🔥 Ngày chi nhiều nhất tháng:</span>
                     <span id="peak-expense-day">Chưa có dữ liệu</span>
@@ -245,6 +249,7 @@
             </div>
         </div>
 
+        <!-- SHEET 3: SỬA DANH MỤC -->
         <div id="sheet-settings" class="excel-sheet" style="overflow-y: auto;">
             <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #334155;">⚙️ Định Nghĩa & Kéo Thả Thứ Tự Thẻ</h3>
             
@@ -287,6 +292,7 @@
 
     </div>
 
+    <!-- TABS BAR -->
     <div class="excel-tab-bar">
         <div class="excel-tab active-tab" onclick="switchSheet('sheet-input', this)">
             <div class="excel-tab-icon">📝</div>
@@ -339,11 +345,12 @@
     const parentContainer = document.getElementById('parent-category-container'); const subWrapper = document.getElementById('sub-category-wrapper'); const subContainer = document.getElementById('sub-category-container');
     const submitBtnEl = document.getElementById('submit-btn-el');
 
-    const today = new Date();
-    dateInput.value = today.toISOString().split('T')[0];
-    filterOnlyMonth.value = String(today.getMonth() + 1).padStart(2, '0');
-    filterOnlyYear.value = String(today.getFullYear());
-    filterDate.value = today.toISOString().split('T')[0];
+    // === ĐỒNG BỘ MÚI GIỜ VIỆT NAM (CÁCH 2) ===
+    const todayVN = new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
+    dateInput.value = todayVN;
+    filterOnlyMonth.value = todayVN.split('-')[1];
+    filterOnlyYear.value = todayVN.split('-')[0];
+    filterDate.value = todayVN;
 
     let transactions = JSON.parse(localStorage.getItem('family_excel_tab_v14')) || [];
 
