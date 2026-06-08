@@ -331,7 +331,14 @@
 
 <script>
     const MAX_AMOUNT = 10000000000;
-
+// === TỰ ĐỘNG TẢI LẠI TRANG KHI QUA NGÀY MỚI (DÀNH CHO TREO TAB) ===
+    let lastCheckedDate = new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
+    setInterval(() => {
+        const currentDate = new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
+        if (currentDate !== lastCheckedDate) {
+            location.reload(); // Phát hiện qua ngày mới -> F5 lại trang
+        }
+    }, 60000); // 60000ms = 1 phút kiểm tra 1 lần
     const defaultCategoryTree = {
         expense: [
             { parent: "Ăn uống hàng ngày", subs: ["Ăn sáng", "Ăn trưa", "Ăn tối", "Mục khác"] },
