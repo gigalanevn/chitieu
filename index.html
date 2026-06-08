@@ -102,7 +102,10 @@
 
         .history-section-title { font-size: 13px; font-weight: bold; color: #475569; margin: 5px 0; padding-bottom: 4px; border-bottom: 1px dashed var(--border-color); }
         .history-list { list-style: none; padding: 0; margin: 0; }
-        .history-list li { background: #f8fafc; display: flex; justify-content: space-between; align-items: center; padding: 10px; margin-bottom: 6px; border-radius: 6px; border-left: 4px solid #ccc; font-size: 13px; }
+        .history-list li { display: flex; justify-content: space-between; align-items: center; padding: 10px; margin-bottom: 6px; border-radius: 6px; border-left: 4px solid #ccc; font-size: 13px; }
+        /* Xen kẽ màu nền theo ngày */
+        .history-list li.day-band-0 { background: #f8fafc; }
+        .history-list li.day-band-1 { background: #f0f4ff; }
         .history-list li.income { border-left-color: var(--income-color); }
         .history-list li.expense { border-left-color: var(--expense-color); }
         .info-span { display: flex; flex-direction: column; max-width: 65%; }
@@ -336,9 +339,9 @@
     setInterval(() => {
         const currentDate = new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
         if (currentDate !== lastCheckedDate) {
-            location.reload(); // Phát hiện qua ngày mới -> F5 lại trang
+            location.reload();
         }
-    }, 60000); // 60000ms = 1 phút kiểm tra 1 lần
+    }, 60000);
     const defaultCategoryTree = {
         expense: [
             { parent: "Ăn uống hàng ngày", subs: ["Ăn sáng", "Ăn trưa", "Ăn tối", "Mục khác"] },
@@ -620,7 +623,6 @@
                 const parentClean = removeVietnameseTones(t.parentCategory);
                 const subClean = removeVietnameseTones(t.subCategory);
                 const textClean = removeVietnameseTones(t.text || "");
-                
                 return parentClean.includes(keywordClean) || 
                        subClean.includes(keywordClean) || 
                        textClean.includes(keywordClean);
@@ -628,10 +630,27 @@
         }
         
         calculatePeakExpenseDay(filtered);
-        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // 3. SẮP XẾP: ngày mới lên trên, cùng ngày thì giao dịch thêm sau (id lớn hơn) lên trên
+        filtered.sort((a, b) => {
+            if (b.date !== a.date) return b.date > a.date ? 1 : -1;
+            return b.id - a.id;
+        });
         
+        // 4. XEN KẼ MÀU THEO NGÀY
+        let dayBandIndex = -1;
+        let lastDate = null;
+
         filtered.forEach(t => {
-            const li = document.createElement('li'); li.classList.add(t.type);
+            // Mỗi khi đổi sang ngày mới, chuyển band (0 hoặc 1)
+            if (t.date !== lastDate) {
+                dayBandIndex = (dayBandIndex + 1) % 2;
+                lastDate = t.date;
+            }
+
+            const li = document.createElement('li');
+            li.classList.add(t.type);
+            li.classList.add(`day-band-${dayBandIndex}`);
             li.innerHTML = `
                 <div class="info-span">
                     <strong>${t.parentCategory} → ${t.subCategory}${t.text ? ' ['+t.text+']':''}</strong>
