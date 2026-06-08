@@ -92,18 +92,23 @@
 
         .filter-panel { background: #edf2f7; padding: 8px; border-radius: 8px; margin-bottom: 10px; }
         .filter-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-        .filter-row label { min-width: 80px; margin-bottom: 0; font-size: 12px; }
-        .filter-row select, .filter-row input[type="date"] { padding: 4px; height: 30px; font-size: 12px; }
+        .filter-row label { min-width: 85px; margin-bottom: 0; font-size: 12px; font-weight: bold;}
+        .filter-row select, .filter-row input[type="date"], .filter-row input[type="text"] { padding: 4px 8px; height: 32px; font-size: 12px; border-radius: 4px; border: 1px solid #ccc; }
 
-        .chart-container-box { height: 110px; margin-bottom: 10px; position: relative; }
+        /* BIỂU ĐỒ VÀ NÚT ẨN HIỆN */
+        .chart-toggle-zone { display: flex; justify-content: flex-end; margin-bottom: 6px; }
+        .toggle-chart-btn { background: #e2e8f0; border: 1px solid #cbd5e1; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 4px; cursor: pointer; color: #475569; }
+        .chart-container-box { height: 110px; margin-bottom: 10px; position: relative; display: none; }
+
         .history-section-title { font-size: 13px; font-weight: bold; color: #475569; margin: 5px 0; padding-bottom: 4px; border-bottom: 1px dashed var(--border-color); }
         .history-list { list-style: none; padding: 0; margin: 0; }
         .history-list li { background: #f8fafc; display: flex; justify-content: space-between; align-items: center; padding: 10px; margin-bottom: 6px; border-radius: 6px; border-left: 4px solid #ccc; font-size: 13px; }
         .history-list li.income { border-left-color: var(--income-color); }
         .history-list li.expense { border-left-color: var(--expense-color); }
-        .info-span { display: flex; flex-direction: column; }
+        .info-span { display: flex; flex-direction: column; max-width: 65%; }
+        .info-span strong { white-space: normal; word-break: break-all; }
         .date-span { font-size: 10px; color: #94a3b8; margin-top: 2px; }
-        .delete-btn { background: none; border: none; color: #cbd5e1; font-size: 14px; padding: 0 5px; }
+        .delete-btn { background: none; border: none; color: #cbd5e1; font-size: 14px; padding: 0 5px; cursor: pointer;}
         .char-count { font-size: 10px; color: #7f8c8d; text-align: right; display: block; margin-top: 1px;}
 
         /* CONFIG PANEL */
@@ -123,7 +128,6 @@
 </head>
 <body>
 
-    <!-- TOP BAR + LINK SHOPEE -->
     <div class="top-mini-bar">
         <div class="top-left-zone">
             <div class="title">Sổ Thu Chi</div>
@@ -139,7 +143,6 @@
 
     <div class="sheet-container">
         
-        <!-- SHEET 1: NHẬP LIỆU -->
         <div id="sheet-input" class="excel-sheet active-sheet">
             <div class="type-btn-group">
                 <button type="button" id="btn-expense" class="type-btn">Chi Tiêu (-)</button>
@@ -194,14 +197,21 @@
             </form>
         </div>
 
-        <!-- SHEET 2: TỔNG QUAN -->
         <div id="sheet-report" class="excel-sheet">
             <div class="scrollable-report-wrapper">
                 <div class="filter-panel">
                     <div class="filter-row">
+                        <label>Chế độ xem:</label>
+                        <select id="filter-time-mode" onchange="toggleTimeMode()" style="flex: 1;">
+                            <option value="month">Xem theo Tháng/Năm cố định</option>
+                            <option value="range">Xem theo Khoảng ngày tùy chọn</option>
+                        </select>
+                    </div>
+
+                    <div id="box-filter-month" class="filter-row">
                         <label>Chọn tháng:</label>
                         <div style="display: flex; gap: 4px; flex: 1;">
-                            <select id="filter-only-month" onchange="clearDateFilterAndInit()">
+                            <select id="filter-only-month" onchange="init()">
                                 <option value="01">Tháng 1</option><option value="02">Tháng 2</option>
                                 <option value="03">Tháng 3</option><option value="04">Tháng 4</option>
                                 <option value="05">Tháng 5</option><option value="06">Tháng 6</option>
@@ -209,23 +219,33 @@
                                 <option value="09">Tháng 9</option><option value="10">Tháng 10</option>
                                 <option value="11">Tháng 11</option><option value="12">Tháng 12</option>
                             </select>
-                            <select id="filter-only-year" onchange="clearDateFilterAndInit()">
+                            <select id="filter-only-year" onchange="init()">
                                 <option value="2024">2024</option><option value="2025">2025</option>
                                 <option value="2026">2026</option><option value="2027">2027</option>
                                 <option value="2028">2028</option>
                             </select>
                         </div>
                     </div>
-                    <div class="filter-row" style="margin-bottom: 0;">
-                        <label>Lọc theo ngày:</label>
-                        <input type="checkbox" id="enable-date-filter" style="width: auto; margin-right: 4px;" onchange="toggleDateFilter()">
-                        <input type="date" id="filter-date" disabled onchange="init()" />
+
+                    <div id="box-filter-range" style="display: none; flex-direction: column; gap: 6px;">
+                        <div class="filter-row">
+                            <label>Từ ngày:</label>
+                            <input type="date" id="filter-start-date" onchange="init()" style="flex: 1;" />
+                        </div>
+                        <div class="filter-row">
+                            <label>Đến ngày:</label>
+                            <input type="date" id="filter-end-date" onchange="init()" style="flex: 1;" />
+                        </div>
+                    </div>
+
+                    <div class="filter-row" style="margin-top: 4px; margin-bottom: 0;">
+                        <label>Tìm nội dung:</label>
+                        <input type="text" id="search-keyword" placeholder="Ví dụ: an sang, dien nuoc, luong..." oninput="init()" style="flex: 1;" />
                     </div>
                 </div>
 
-                <!-- BANNER THÔNG TIN NGÀY CHI NHIỀU NHẤT -->
                 <div class="insight-banner">
-                    <span>🔥 Ngày chi nhiều nhất tháng:</span>
+                    <span>🔥 Ngày chi nhiều nhất khoảng lọc:</span>
                     <span id="peak-expense-day">Chưa có dữ liệu</span>
                 </div>
 
@@ -240,16 +260,18 @@
                     </div>
                 </div>
 
-                <div class="chart-container-box">
+                <div class="chart-toggle-zone">
+                    <button type="button" class="toggle-chart-btn" id="btn-toggle-chart" onclick="toggleChartVisibility()">👁️ Hiện biểu đồ</button>
+                </div>
+                <div class="chart-container-box" id="chart-wrapper-box">
                     <canvas id="expenseChart"></canvas>
                 </div>
 
-                <div class="history-section-title">Nhật Ký Chi Tiết Trong Tháng (Mới → Cũ)</div>
+                <div class="history-section-title">Nhật Ký Chi Tiết Theo Bộ Lọc (Mới → Cũ)</div>
                 <ul id="list" class="history-list"></ul>
             </div>
         </div>
 
-        <!-- SHEET 3: SỬA DANH MỤC -->
         <div id="sheet-settings" class="excel-sheet" style="overflow-y: auto;">
             <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #334155;">⚙️ Định Nghĩa & Kéo Thả Thứ Tự Thẻ</h3>
             
@@ -292,7 +314,6 @@
 
     </div>
 
-    <!-- TABS BAR -->
     <div class="excel-tab-bar">
         <div class="excel-tab active-tab" onclick="switchSheet('sheet-input', this)">
             <div class="excel-tab-icon">📝</div>
@@ -340,19 +361,39 @@
     const list = document.getElementById('list'); const form = document.getElementById('transaction-form');
     const dateInput = document.getElementById('date'); const amountInput = document.getElementById('amount');
     const textInput = document.getElementById('text'); const filterOnlyMonth = document.getElementById('filter-only-month');
-    const filterOnlyYear = document.getElementById('filter-only-year'); const filterDate = document.getElementById('filter-date');
-    const enableDateFilter = document.getElementById('enable-date-filter'); const charCounter = document.getElementById('char-counter');
+    const filterOnlyYear = document.getElementById('filter-only-year'); 
+    const filterTimeMode = document.getElementById('filter-time-mode');
+    const boxFilterMonth = document.getElementById('box-filter-month');
+    const boxFilterRange = document.getElementById('box-filter-range');
+    const filterStartDate = document.getElementById('filter-start-date');
+    const filterEndDate = document.getElementById('filter-end-date');
+    const searchKeyword = document.getElementById('search-keyword');
+    const chartWrapperBox = document.getElementById('chart-wrapper-box');
+    const btnToggleChart = document.getElementById('btn-toggle-chart');
+    const charCounter = document.getElementById('char-counter');
     const parentContainer = document.getElementById('parent-category-container'); const subWrapper = document.getElementById('sub-category-wrapper'); const subContainer = document.getElementById('sub-category-container');
     const submitBtnEl = document.getElementById('submit-btn-el');
 
-    // === ĐỒNG BỘ MÚI GIỜ VIỆT NAM (CÁCH 2) ===
+    // === ĐỒNG BỘ MÚI GIỜ VIỆT NAM ===
     const todayVN = new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
     dateInput.value = todayVN;
     filterOnlyMonth.value = todayVN.split('-')[1];
     filterOnlyYear.value = todayVN.split('-')[0];
-    filterDate.value = todayVN;
+    filterStartDate.value = todayVN.substring(0, 8) + "01"; 
+    filterEndDate.value = todayVN;
 
     let transactions = JSON.parse(localStorage.getItem('family_excel_tab_v14')) || [];
+
+    // === HÀM LOẠI BỎ DẤU TIẾNG VIỆT ĐỂ TÌM KIẾM CHÍNH XÁC ===
+    function removeVietnameseTones(str) {
+        if (!str) return "";
+        return str
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/Đ/g, "D")
+            .replace(/đ/g, "d")
+            .toLowerCase();
+    }
 
     function switchSheet(sheetId, tabElement) {
         document.querySelectorAll('.excel-sheet').forEach(sheet => sheet.classList.remove('active-sheet'));
@@ -364,8 +405,34 @@
     }
 
     function syncFilterMonthAndYear(dateStr) {
-        if(dateStr) { const [year, month] = dateStr.split('-'); filterOnlyMonth.value = month; filterOnlyYear.value = year; filterDate.value = dateStr; }
+        if(dateStr) { 
+            const [year, month] = dateStr.split('-'); 
+            filterOnlyMonth.value = month; 
+            filterOnlyYear.value = year; 
+        }
         init();
+    }
+
+    function toggleTimeMode() {
+        if(filterTimeMode.value === 'month') {
+            boxFilterMonth.style.display = 'flex';
+            boxFilterRange.style.display = 'none';
+        } else {
+            boxFilterMonth.style.display = 'none';
+            boxFilterRange.style.display = 'flex';
+        }
+        init();
+    }
+
+    function toggleChartVisibility() {
+        if(chartWrapperBox.style.display === 'block') {
+            chartWrapperBox.style.display = 'none';
+            btnToggleChart.innerText = "👁️ Hiện biểu đồ";
+        } else {
+            chartWrapperBox.style.display = 'block';
+            btnToggleChart.innerText = "🙈 Ẩn biểu đồ";
+            init(); 
+        }
     }
 
     function checkAmountHighlight() { if (amountInput.value !== "") amountInput.classList.add('has-value'); else amountInput.classList.remove('has-value'); }
@@ -387,8 +454,6 @@
     
     function clearAmountInput() { amountInput.value = ""; checkAmountHighlight(); }
     function updateCharCount(input) { charCounter.innerText = `${input.value.length} / 70 ký tự`; }
-    function toggleDateFilter() { filterDate.disabled = !enableDateFilter.checked; init(); }
-    function clearDateFilterAndInit() { enableDateFilter.checked = false; filterDate.disabled = true; init(); }
 
     function renderParentCategories() {
         parentContainer.innerHTML = ''; const items = categoryTree[currentType] || [];
@@ -522,12 +587,42 @@
     }
 
     function init() {
-        list.innerHTML = ''; let filtered = [];
-        if (enableDateFilter.checked) { filtered = transactions.filter(t => t.date === filterDate.value); } 
-        else { const targetMonthStr = `${filterOnlyYear.value}-${filterOnlyMonth.value}`; filtered = transactions.filter(t => t.date.substring(0, 7) === targetMonthStr); }
+        list.innerHTML = ''; 
+        let filtered = [];
+        
+        const keywordClean = removeVietnameseTones(searchKeyword.value.trim());
+
+        // 1. LỌC THEO THỜI GIAN
+        if (filterTimeMode.value === 'month') {
+            const targetMonthStr = `${filterOnlyYear.value}-${filterOnlyMonth.value}`;
+            filtered = transactions.filter(t => t.date.substring(0, 7) === targetMonthStr);
+        } else {
+            const start = filterStartDate.value;
+            const end = filterEndDate.value;
+            filtered = transactions.filter(t => {
+                if(start && end) return t.date >= start && t.date <= end;
+                if(start) return t.date >= start;
+                if(end) return t.date <= end;
+                return true;
+            });
+        }
+
+        // 2. LỌC THEO CHỮ KHÔNG DẤU THÔNG MINH
+        if (keywordClean !== "") {
+            filtered = filtered.filter(t => {
+                const parentClean = removeVietnameseTones(t.parentCategory);
+                const subClean = removeVietnameseTones(t.subCategory);
+                const textClean = removeVietnameseTones(t.text || "");
+                
+                return parentClean.includes(keywordClean) || 
+                       subClean.includes(keywordClean) || 
+                       textClean.includes(keywordClean);
+            });
+        }
         
         calculatePeakExpenseDay(filtered);
         filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
         filtered.forEach(t => {
             const li = document.createElement('li'); li.classList.add(t.type);
             li.innerHTML = `
@@ -549,7 +644,10 @@
         document.getElementById('top-balance-val').innerText = (totalIncAll - totalExpAll).toLocaleString('vi-VN') + 'đ';
         document.getElementById('total-income').innerText = inc.toLocaleString('vi-VN') + 'đ';
         document.getElementById('total-expense').innerText = exp.toLocaleString('vi-VN') + 'đ';
-        updateChart(inc, exp);
+        
+        if(chartWrapperBox.style.display === 'block') {
+            updateChart(inc, exp);
+        }
     }
 
     function updateChart(income, expense) {
@@ -568,7 +666,10 @@
 
         transactions.push({ id: Date.now(), date: dateInput.value, type: currentType, parentCategory: selectedParent, subCategory: selectedSub || "Mục khác", amount: cleanAmount, text: textInput.value.trim() });
         localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions));
-        const [year, month] = dateInput.value.split('-'); filterOnlyMonth.value = month; filterOnlyYear.value = year; enableDateFilter.checked = false; filterDate.disabled = true;
+        
+        const [year, month] = dateInput.value.split('-'); 
+        filterOnlyMonth.value = month; 
+        filterOnlyYear.value = year; 
         
         init(); amountInput.value = ''; textInput.value = ''; charCounter.innerText = "0 / 70 ký tự"; checkAmountHighlight();
         
