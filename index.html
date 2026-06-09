@@ -750,6 +750,8 @@
                 const [y, m, d] = t.date.split('-');
                 const dateObj = new Date(t.date);
                 const days = ['Chủ Nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'];
+                const isToday = t.date === todayVN;
+                const dayLabel = isToday ? `🔴 Hôm nay (${days[dateObj.getDay()]}) ${d}/${m}` : `${days[dateObj.getDay()]} ${d}/${m}`;
 
                 let summaryHtml = '';
                 if (inc > 0) summaryHtml += `<span style="color:var(--income-color);font-size:10px">+${inc.toLocaleString('vi-VN')}</span>`;
@@ -757,7 +759,7 @@
                 summaryHtml += `<span style="color:${netColor};font-size:10px;font-weight:800;margin-left:4px">(${netSign}${net.toLocaleString('vi-VN')}đ)</span>`;
 
                 header.innerHTML = `
-                    <span style="font-weight:800">${days[dateObj.getDay()]} ${d}/${m}</span>
+                    <span style="font-weight:800">${dayLabel}</span>
                     <span style="display:flex;align-items:center;gap:2px;flex-wrap:wrap;justify-content:flex-end">${summaryHtml}</span>
                 `;
                 list.appendChild(header);
