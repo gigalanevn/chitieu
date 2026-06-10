@@ -191,11 +191,35 @@
         body.dark-mode .day-header.band-1 { background: #1e3260; color: #93c5fd; }
         .history-list li.income { border-left-color: var(--income-color); }
         .history-list li.expense { border-left-color: var(--expense-color); }
-        .info-span { display: flex; flex-direction: column; max-width: 65%; }
+        .info-span { display: flex; flex-direction: column; max-width: 60%; }
         .info-span strong { white-space: normal; word-break: break-all; color: var(--text-main); }
         .date-span { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-        .delete-btn { background: none; border: none; color: var(--border-btn); font-size: 14px; padding: 0 5px; cursor: pointer;}
+        /* Action buttons */
+        .action-btns { display: flex; gap: 4px; align-items: center; }
+        .edit-btn { background: none; border: none; font-size: 14px; padding: 0 4px; cursor: pointer; }
+        .delete-btn { background: none; border: none; color: #cbd5e1; font-size: 14px; padding: 0 4px; cursor: pointer;}
         .char-count { font-size: 10px; color: var(--text-muted); text-align: right; display: block; margin-top: 1px;}
+
+        /* EDIT MODAL */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 999; align-items: flex-end; justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: var(--bg-sheet); border-radius: 16px 16px 0 0;
+            padding: 20px 16px 32px; width: 100%; max-width: 480px;
+            animation: slideUp 0.2s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .modal-box h3 { margin: 0 0 14px 0; font-size: 15px; color: var(--primary-color); }
+        .modal-row { margin-bottom: 10px; }
+        .modal-row label { font-size: 12px; font-weight: 600; color: var(--text-label); display: block; margin-bottom: 4px; }
+        .modal-row input { width: 100%; padding: 8px 10px; border: 1px solid var(--border-input); border-radius: 6px; font-size: 14px; background: var(--bg-input); color: var(--text-main); }
+        .modal-btns { display: flex; gap: 8px; margin-top: 14px; }
+        .modal-btns button { flex: 1; padding: 11px; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .btn-save { background: var(--primary-color); color: white; }
+        .btn-cancel { background: var(--bg-filter); color: var(--text-main); }
 
         /* CONFIG PANEL */
         .config-section { background: var(--bg-config-section); padding: 10px; border: 1px solid var(--border-main); border-radius: 8px; margin-bottom: 12px; transition: background 0.3s; }
@@ -242,7 +266,8 @@
                 <div class="form-compact-group">
                     <div>
                         <label>Ngày giao dịch</label>
-                        <input type="date" id="date" required onchange="syncFilterMonthAndYear(this.value)" />
+                        <input type="date" id="date" required onchange="syncFilterMonthAndYear(this.value); updateDateDayLabel(this.value)" />
+                        <span id="date-day-label" style="font-size:11px; font-weight:700; color:var(--primary-color); margin-top:3px; display:block;"></span>
                     </div>
                     <div>
                         <label>Số tiền có thể cộng dồn</label>
@@ -329,7 +354,10 @@
 
                     <div class="filter-row" style="margin-top: 4px; margin-bottom: 0;">
                         <label>Tìm nội dung:</label>
-                        <input type="text" id="search-keyword" placeholder="Ví dụ: an sang, dien nuoc, luong..." oninput="init()" style="flex: 1;" />
+                        <div style="flex:1; position:relative; display:flex; align-items:center;">
+                            <input type="text" id="search-keyword" placeholder="Ví dụ: an sang, dien nuoc, luong..." oninput="onSearchInput()" style="width:100%; padding-right:28px;" />
+                            <button id="search-clear-btn" onclick="clearSearch()" style="display:none; position:absolute; right:6px; background:none; border:none; font-size:15px; color:#94a3b8; cursor:pointer; padding:0; line-height:1;">✕</button>
+                        </div>
                     </div>
                 </div>
 
@@ -356,8 +384,35 @@
                     <canvas id="expenseChart"></canvas>
                 </div>
 
-                <div class="history-section-title">Nhật Ký Chi Tiết Theo Bộ Lọc (Mới → Cũ)</div>
+                <div class="history-section-title" style="display:flex;justify-content:space-between;align-items:center;">
+                    <span>Nhật Ký Chi Tiết Theo Bộ Lọc (Mới → Cũ)</span>
+                    <button onclick="exportJSON()" style="background:#e2e8f0;border:1px solid #cbd5e1;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:bold;color:#475569;cursor:pointer;">💾 Xuất JSON</button>
+                </div>
                 <ul id="list" class="history-list"></ul>
+            </div>
+        </div>
+
+        <!-- EDIT MODAL -->
+        <div class="modal-overlay" id="edit-modal">
+            <div class="modal-box">
+                <h3>✏️ Sửa Giao Dịch</h3>
+                <input type="hidden" id="edit-id" />
+                <div class="modal-row">
+                    <label>Ngày</label>
+                    <input type="date" id="edit-date" />
+                </div>
+                <div class="modal-row">
+                    <label>Số tiền</label>
+                    <input type="text" inputmode="numeric" id="edit-amount" oninput="formatCurrencyInput(this)" />
+                </div>
+                <div class="modal-row">
+                    <label>Ghi chú</label>
+                    <input type="text" id="edit-text" maxlength="70" placeholder="Ghi chú..." />
+                </div>
+                <div class="modal-btns">
+                    <button class="btn-cancel" onclick="closeEditModal()">Huỷ</button>
+                    <button class="btn-save" onclick="saveEdit()">Lưu lại</button>
+                </div>
             </div>
         </div>
 
@@ -430,6 +485,7 @@
         if (dateInput && dateInput.value !== currentDate) {
             dateInput.value = currentDate;
             syncFilterMonthAndYear(currentDate);
+            updateDateDayLabel(currentDate);
         }
     }
     // Khi chuyển sang tab này → cập nhật ngay lập tức
@@ -483,6 +539,7 @@
     // === ĐỒNG BỘ MÚI GIỜ VIỆT NAM ===
     const todayVN = getVNDate();
     dateInput.value = todayVN;
+    updateDateDayLabel(todayVN);
     filterOnlyMonth.value = todayVN.split('-')[1];
     filterOnlyYear.value = todayVN.split('-')[0];
     filterStartDate.value = todayVN.substring(0, 8) + "01"; 
@@ -499,6 +556,26 @@
             .replace(/Đ/g, "D")
             .replace(/đ/g, "d")
             .toLowerCase();
+    }
+
+    function updateDateDayLabel(dateStr) {
+        const el = document.getElementById('date-day-label');
+        if (!dateStr) { el.innerText = ''; return; }
+        const days = ['Chủ Nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'];
+        const d = new Date(dateStr);
+        const isToday = dateStr === getVNDate();
+        el.innerText = isToday ? `${days[d.getDay()]} — Hôm nay` : days[d.getDay()];
+    }
+
+    function onSearchInput() {
+        const btn = document.getElementById('search-clear-btn');
+        btn.style.display = searchKeyword.value.length > 0 ? 'block' : 'none';
+        init();
+    }
+    function clearSearch() {
+        searchKeyword.value = '';
+        document.getElementById('search-clear-btn').style.display = 'none';
+        init();
     }
 
     function switchSheet(sheetId, tabElement) {
@@ -782,8 +859,11 @@
                 <div class="info-span">
                     <strong>${t.parentCategory} → ${t.subCategory}${t.text ? ' ['+t.text+']':''}</strong>
                 </div>
-                <span style="font-weight:600; color:${t.type==='income'?'var(--income-color)':'var(--expense-color)'}">${t.type==='income'?'+':'-'}${t.amount.toLocaleString('vi-VN')}đ</span>
-                <button class="delete-btn" onclick="removeTransaction(${t.id})">❌</button>
+                <span style="font-weight:600;color:${t.type==='income'?'var(--income-color)':'var(--expense-color)'}">${t.type==='income'?'+':'-'}${t.amount.toLocaleString('vi-VN')}đ</span>
+                <div class="action-btns">
+                    <button class="edit-btn" onclick="openEditModal(${t.id})" title="Sửa">✏️</button>
+                    <button class="delete-btn" onclick="removeTransaction(${t.id})" title="Xóa">🗑️</button>
+                </div>
             `;
             list.appendChild(li);
         });
