@@ -420,14 +420,24 @@
 
 <script>
     const MAX_AMOUNT = 10000000000;
-// === TỰ ĐỘNG TẢI LẠI TRANG KHI QUA NGÀY MỚI (DÀNH CHO TREO TAB) ===
-    let lastCheckedDate = new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
-    setInterval(() => {
-        const currentDate = new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
-        if (currentDate !== lastCheckedDate) {
-            location.reload();
+// === TỰ ĐỘNG CẬP NHẬT NGÀY KHI CHUYỂN TAB HOẶC QUA NGÀY MỚI (GIỜ VN) ===
+    function getVNDate() {
+        return new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
+    }
+    function refreshDateIfNeeded() {
+        const currentDate = getVNDate();
+        const dateInput = document.getElementById('date');
+        if (dateInput && dateInput.value !== currentDate) {
+            dateInput.value = currentDate;
+            syncFilterMonthAndYear(currentDate);
         }
-    }, 60000);
+    }
+    // Khi chuyển sang tab này → cập nhật ngay lập tức
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') refreshDateIfNeeded();
+    });
+    // Dự phòng: kiểm tra mỗi phút nếu tab luôn mở
+    setInterval(refreshDateIfNeeded, 60000);
     const defaultCategoryTree = {
         expense: [
             { parent: "Ăn uống hàng ngày", subs: ["Ăn sáng", "Ăn trưa", "Ăn tối", "Mục khác"] },
@@ -471,7 +481,7 @@
     const submitBtnEl = document.getElementById('submit-btn-el');
 
     // === ĐỒNG BỘ MÚI GIỜ VIỆT NAM ===
-    const todayVN = new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
+    const todayVN = getVNDate();
     dateInput.value = todayVN;
     filterOnlyMonth.value = todayVN.split('-')[1];
     filterOnlyYear.value = todayVN.split('-')[0];
@@ -750,7 +760,7 @@
                 const [y, m, d] = t.date.split('-');
                 const dateObj = new Date(t.date);
                 const days = ['Chủ Nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'];
-                const isToday = t.date === todayVN;
+                const isToday = t.date === getVNDate();
                 const dayLabel = isToday ? `🔴 Hôm nay (${days[dateObj.getDay()]}) ${d}/${m}` : `${days[dateObj.getDay()]} ${d}/${m}`;
 
                 let summaryHtml = '';
