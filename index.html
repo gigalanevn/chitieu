@@ -381,7 +381,7 @@
                 </div>
 
                 <div class="chart-toggle-zone">
-                    <button type="button" class="toggle-chart-btn" id="btn-toggle-chart" onclick="toggleChartVisibility()">👁️ Hiện biểu đồ</button>
+                    <button type="button" class="toggle-chart-btn" id="btn-toggle-chart" onclick="toggleChartVisibility()">🙉 Hiện biểu đồ</button>
                 </div>
                 <div class="chart-container-box" id="chart-wrapper-box">
                     <canvas id="expenseChart"></canvas>
@@ -389,7 +389,11 @@
 
                 <div class="history-section-title" style="display:flex;justify-content:space-between;align-items:center;">
                     <span>Nhật Ký Chi Tiết Theo Bộ Lọc (Mới → Cũ)</span>
-                    <button onclick="exportJSON()" style="background:#e2e8f0;border:1px solid #cbd5e1;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:bold;color:#475569;cursor:pointer;">💾 Xuất JSON</button>
+                    <div style="display:flex;gap:5px;">
+<button onclick="importJsonFile.click()" style="background:#dcfce7;border:1px solid #86efac;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:bold;color:#166534;cursor:pointer;">📂 Nhập JSON</button>
+<button onclick="exportJSON()" style="background:#e2e8f0;border:1px solid #cbd5e1;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:bold;color:#475569;cursor:pointer;">💾 Xuất JSON</button>
+</div>
+<input type="file" id="importJsonFile" accept=".json" style="display:none;">
                 </div>
                 <ul id="list" class="history-list"></ul>
             </div>
@@ -457,6 +461,15 @@
                 </select>
                 <div id="config-tags-display-area" class="cat-list-tags"></div>
             </div>
+            
+            <div class="config-section">
+                <h4>4. Sao Lưu & Khôi Phục Danh Mục</h4>
+                <div style="display:flex; gap:8px;">
+                    <button onclick="exportCategoriesJSON()" style="flex:1; background:#cbd5e1; border:none; border-radius:6px; padding:8px; font-weight:bold; color:#475569; cursor:pointer;">💾 Xuất Danh Mục (.json)</button>
+                    <button onclick="importCatFile.click()" style="flex:1; background:#dcfce7; border:none; border-radius:6px; padding:8px; font-weight:bold; color:#166534; cursor:pointer;">📂 Nhập Danh Mục (.json)</button>
+                </div>
+                <input type="file" id="importCatFile" accept=".json" style="display:none;" onchange="importCategoriesJSON(event)">
+            </div>
         </div>
 
     </div>
@@ -521,6 +534,46 @@
         setType(currentType);
     }
 
+    // === HÀM XUẤT NHẬP DANH MỤC ===
+    function exportCategoriesJSON() {
+        const json = JSON.stringify(categoryTree, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const d = new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
+        a.href = url;
+        a.download = `danh-muc-thu-chi-${d}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function importCategoriesJSON(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedData = JSON.parse(e.target.result);
+                if (typeof importedData !== 'object' || !importedData.expense || !importedData.income) {
+                    alert("Cấu trúc file danh mục JSON không hợp lệ!");
+                    return;
+                }
+                if (!confirm("Bạn có muốn ghi đè toàn bộ cấu trúc danh mục hiện tại không?")) {
+                    return;
+                }
+                categoryTree = importedData;
+                saveCategoryTree();
+                updateParentSelectConfig();
+                renderConfigTagsList();
+                alert("✅ Nhập cấu trúc danh mục thành công!");
+            } catch(err) {
+                alert("❌ File JSON không đúng định dạng!");
+            }
+        };
+        reader.readAsText(file);
+        event.target.value = ''; // Reset input file
+    }
+
     let currentType = 'expense'; let selectedParent = ''; let selectedSub = ''; let myChart = null;
 
     const list = document.getElementById('list'); const form = document.getElementById('transaction-form');
@@ -559,7 +612,7 @@
         if (!str) return "";
         return str
             .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[̀-ͯ]/g, "")
             .replace(/Đ/g, "D")
             .replace(/đ/g, "d")
             .toLowerCase();
@@ -617,7 +670,7 @@
     function toggleChartVisibility() {
         if(chartWrapperBox.style.display === 'block') {
             chartWrapperBox.style.display = 'none';
-            btnToggleChart.innerText = "👁️ Hiện biểu đồ";
+            btnToggleChart.innerText = "🙉 Hiện biểu đồ";
         } else {
             chartWrapperBox.style.display = 'block';
             btnToggleChart.innerText = "🙈 Ẩn biểu đồ";
@@ -1064,7 +1117,7 @@
         if (e.target === this) closeEditModal();
     });
 
-    // === XUẤT JSON ===
+    // === XUẤT JSON GIAO DỊCH ===
     function exportJSON() {
         if (transactions.length === 0) return alert('Chưa có dữ liệu để xuất!');
         const json = JSON.stringify(transactions, null, 2);
@@ -1078,7 +1131,41 @@
         URL.revokeObjectURL(url);
     }
 
-    // === DARK MODE ===
+    
+function importJSON(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+
+            if (!Array.isArray(importedData)) {
+                alert("File JSON không hợp lệ!");
+                return;
+            }
+
+            if (!confirm(`Tìm thấy ${importedData.length} giao dịch.
+Bạn có muốn ghi đè dữ liệu hiện tại không?`)) {
+                return;
+            }
+
+            transactions = importedData;
+            localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions));
+            init();
+            alert("✅ Nhập dữ liệu thành công!");
+        } catch(err) {
+            alert("❌ File JSON không đúng định dạng!");
+        }
+    };
+
+    reader.readAsText(file);
+}
+
+
+// === DARK MODE ===
     function applyDarkMode(isDark) {
         document.body.classList.toggle('dark-mode', isDark);
         document.getElementById('dark-toggle-btn').innerText = isDark ? '☀️' : '🌙';
@@ -1090,7 +1177,10 @@
     // Khôi phục trạng thái dark mode đã lưu
     if (localStorage.getItem('dark_mode_v1') === '1') applyDarkMode(true);
 
-    setType('expense'); init();
+    const importJsonFile = document.getElementById('importJsonFile');
+importJsonFile.addEventListener('change', importJSON);
+
+setType('expense'); init();
 </script>
 </body>
 </html>
