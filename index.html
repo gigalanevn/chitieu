@@ -197,7 +197,9 @@
         /* Action buttons */
         .action-btns { display: flex; gap: 4px; align-items: center; }
         .edit-btn { background: none; border: none; font-size: 14px; padding: 0 4px; cursor: pointer; }
-        .delete-btn { background: none; border: none; color: #cbd5e1; font-size: 14px; padding: 0 4px; cursor: pointer;}
+        .delete-btn { background: none; border: none; font-size: 14px; padding: 0 4px; cursor: pointer; color: #e74c3c; }
+        /* Mobile cảm ứng: ẩn nút xóa, dùng swipe. Desktop chuột: hiện nút xóa */
+        @media (hover: none) and (pointer: coarse) { .delete-btn { display: none; } }
         .char-count { font-size: 10px; color: var(--text-muted); text-align: right; display: block; margin-top: 1px;}
 
         /* EDIT MODAL */
@@ -307,6 +309,7 @@
                     <span class="char-count" id="char-counter">0 / 70 ký tự</span>
                 </div>
 
+                <button type="button" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none; width:100%; padding:9px; background:#f1f5f9; color:#64748b; border:1px solid #cbd5e1; border-radius:6px; font-size:13px; font-weight:bold; margin-bottom:6px;">✕ Huỷ sửa — Quay lại nhập mới</button>
                 <button type="submit" class="submit-btn" id="submit-btn-el">Ghi Vào Sổ Hệ Thống</button>
             </form>
         </div>
@@ -542,7 +545,11 @@
     updateDateDayLabel(todayVN);
     filterOnlyMonth.value = todayVN.split('-')[1];
     filterOnlyYear.value = todayVN.split('-')[0];
-    filterStartDate.value = todayVN.substring(0, 8) + "01"; 
+    // Mặc định range: đầu tháng → hôm nay
+    filterTimeMode.value = 'range';
+    boxFilterMonth.style.display = 'none';
+    boxFilterRange.style.display = 'flex';
+    filterStartDate.value = todayVN.substring(0, 8) + '01';
     filterEndDate.value = todayVN;
 
     let transactions = JSON.parse(localStorage.getItem('family_excel_tab_v14')) || [];
@@ -652,6 +659,23 @@
         if(items.length === 0) { subWrapper.style.display = 'none'; selectedParent = ''; selectedSub = ''; }
     }
 
+    const notePlaceholders = {
+        'Ăn sáng': 'VD: bánh mì, phở, xôi...',
+        'Ăn trưa': 'VD: cơm văn phòng, bún...',
+        'Ăn tối': 'VD: cơm nhà, lẩu, nướng...',
+        'Cà phê': 'VD: cf sáng, highlands...',
+        'Trà sữa': 'VD: gong cha, the alley...',
+        'Đổ xăng': 'VD: đổ 50k, đầy bình...',
+        'Sửa xe': 'VD: vá lốp, thay nhớt...',
+        'Tiền thuê': 'VD: tháng 6, phòng trọ...',
+        'Tiền điện': 'VD: tháng 6, 150 số...',
+        'Tiền nước': 'VD: tháng 6...',
+        'Internet': 'VD: gia hạn tháng 6...',
+        'Lương chính': 'VD: lương tháng 6...',
+        'Làm thêm': 'VD: OT cuối tuần...',
+        'Thưởng lễ Tết': 'VD: thưởng 30/4...',
+    };
+
     function renderSubCategories(parentName) {
         subContainer.innerHTML = ''; const found = (categoryTree[currentType] || []).find(i => i.parent === parentName);
         const subs = found ? found.subs : [];
@@ -662,10 +686,17 @@
                 btn.onclick = () => {
                     selectedSub = sCat; Array.from(subContainer.children).forEach(b => b.style.cssText = "background:white; color:black;");
                     btn.style.cssText = currentType === 'expense' ? "background:var(--expense-color); color:white;" : "background:var(--income-color); color:white;";
+                    // Cập nhật placeholder ghi chú theo danh mục
+                    const hint = notePlaceholders[sCat] || notePlaceholders[parentName] || 'Ghi chú thêm...';
+                    textInput.placeholder = hint;
                 };
                 subContainer.appendChild(btn); if(idx === 0) btn.click();
             });
-        } else { subWrapper.style.display = 'none'; selectedSub = ''; }
+        } else {
+            subWrapper.style.display = 'none'; selectedSub = '';
+            const hint = notePlaceholders[parentName] || 'Ghi chú thêm...';
+            textInput.placeholder = hint;
+        }
     }
 
     function setType(type) {
@@ -852,9 +883,19 @@
                 list.appendChild(header);
             }
 
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = 'position:relative; margin-bottom:3px; border-radius:8px; overflow:hidden;';
+
+            // Nền đỏ xóa phía sau
+            const bgDel = document.createElement('div');
+            bgDel.style.cssText = 'position:absolute;right:0;top:0;bottom:0;width:90px;background:#e74c3c;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:bold;';
+            bgDel.innerHTML = '🗑️ Xóa';
+            wrapper.appendChild(bgDel);
+
             const li = document.createElement('li');
             li.classList.add(t.type);
             li.classList.add(`day-band-${dayBandIndex}`);
+            li.style.cssText = 'margin-bottom:0; border-radius:8px; position:relative; transition:transform 0.2s ease; will-change:transform;';
             li.innerHTML = `
                 <div class="info-span">
                     <strong>${t.parentCategory} → ${t.subCategory}${t.text ? ' ['+t.text+']':''}</strong>
@@ -865,7 +906,9 @@
                     <button class="delete-btn" onclick="removeTransaction(${t.id})" title="Xóa">🗑️</button>
                 </div>
             `;
-            list.appendChild(li);
+            wrapper.appendChild(li);
+            setupSwipeDelete(li, wrapper, t.id);
+            list.appendChild(wrapper);
         });
 
         const inc = filtered.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
@@ -892,29 +935,147 @@
     }
 
     form.onsubmit = (e) => {
-        e.preventDefault(); const cleanAmount = getCleanAmount(amountInput.value);
+        e.preventDefault();
+        const cleanAmount = getCleanAmount(amountInput.value);
         if (cleanAmount <= 0) return alert('Vui lòng nhập số tiền!');
         if (!selectedParent) return alert('Vui lòng tạo và chọn danh mục trước khi ghi sổ!');
 
-        transactions.push({ id: Date.now(), date: dateInput.value, type: currentType, parentCategory: selectedParent, subCategory: selectedSub || "Mục khác", amount: cleanAmount, text: textInput.value.trim() });
-        localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions));
-        
-        const [year, month] = dateInput.value.split('-'); 
-        filterOnlyMonth.value = month; 
-        filterOnlyYear.value = year; 
-        
-        init(); amountInput.value = ''; textInput.value = ''; charCounter.innerText = "0 / 70 ký tự"; checkAmountHighlight();
-        
-        const originalText = submitBtnEl.innerText; submitBtnEl.innerText = "✓ Đã Ghi Thành Công!"; submitBtnEl.style.background = "#2ecc71";
-        setTimeout(() => { submitBtnEl.innerText = originalText; submitBtnEl.style.background = ""; }, 1000);
+        if (editingId !== null) {
+            // CHẾ ĐỘ SỬA
+            const idx = transactions.findIndex(t => t.id === editingId);
+            if (idx !== -1) {
+                transactions[idx] = { ...transactions[idx], date: dateInput.value, type: currentType, parentCategory: selectedParent, subCategory: selectedSub || 'Mục khác', amount: cleanAmount, text: textInput.value.trim() };
+                localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions));
+            }
+            cancelEdit();
+            const originalText = submitBtnEl.innerText;
+            submitBtnEl.innerText = '✓ Đã Cập Nhật!'; submitBtnEl.style.background = '#2ecc71';
+            setTimeout(() => { submitBtnEl.innerText = 'Ghi Vào Sổ Hệ Thống'; submitBtnEl.style.background = ''; }, 1200);
+        } else {
+            // CHẾ ĐỘ THÊM MỚI
+            transactions.push({ id: Date.now(), date: dateInput.value, type: currentType, parentCategory: selectedParent, subCategory: selectedSub || 'Mục khác', amount: cleanAmount, text: textInput.value.trim() });
+            localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions));
+            const [year, month] = dateInput.value.split('-');
+            filterOnlyMonth.value = month; filterOnlyYear.value = year;
+            amountInput.value = ''; textInput.value = ''; charCounter.innerText = '0 / 70 ký tự'; checkAmountHighlight();
+            const originalText = submitBtnEl.innerText;
+            submitBtnEl.innerText = '✓ Đã Ghi Thành Công!'; submitBtnEl.style.background = '#2ecc71';
+            setTimeout(() => { submitBtnEl.innerText = originalText; submitBtnEl.style.background = ''; }, 1000);
+        }
+        init();
     };
 
-    function removeTransaction(id) { 
-        if (confirm("[CẢNH BÁO LẦN 1] Bạn có chắc chắn muốn xóa giao dịch này khỏi sổ không?")) { 
-            if (confirm("[CẢNH BÁO LẦN 2] Hành động này không thể hoàn tác. Bạn vẫn muốn xóa chứ?")) {
-                transactions = transactions.filter(t => t.id !== id); localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions)); init(); 
+    // === SWIPE ĐỂ XÓA ===
+    function setupSwipeDelete(li, wrapper, id) {
+        let startX = 0, currentX = 0, swiping = false;
+        const THRESHOLD = 80;
+
+        li.addEventListener('touchstart', e => {
+            startX = e.touches[0].clientX;
+            currentX = 0;
+            swiping = true;
+            li.style.transition = 'none';
+        }, { passive: true });
+
+        li.addEventListener('touchmove', e => {
+            if (!swiping) return;
+            currentX = e.touches[0].clientX - startX;
+            if (currentX < 0) {
+                const move = Math.max(currentX, -THRESHOLD - 20);
+                li.style.transform = `translateX(${move}px)`;
             }
-        } 
+        }, { passive: true });
+
+        li.addEventListener('touchend', () => {
+            if (!swiping) return;
+            swiping = false;
+            if (currentX < -THRESHOLD) {
+                li.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+                li.style.transform = 'translateX(-100%)';
+                li.style.opacity = '0';
+                setTimeout(() => { removeTransaction(id); }, 220);
+            } else {
+                li.style.transition = 'transform 0.2s ease';
+                li.style.transform = 'translateX(0)';
+            }
+        });
+    }
+
+    function removeTransaction(id) {
+        transactions = transactions.filter(t => t.id !== id);
+        localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions));
+        init();
+    }
+
+    // === SỬA GIAO DỊCH — chuyển về tab Nhập Liệu, điền sẵn form ===
+    let editingId = null;
+
+    function openEditModal(id) {
+        const t = transactions.find(t => t.id === id);
+        if (!t) return;
+        editingId = t.id;
+
+        // Chuyển sang tab Nhập Liệu
+        const inputTab = document.querySelector('.excel-tab');
+        switchSheet('sheet-input', inputTab);
+
+        // Điền thông tin vào form
+        setType(t.type);
+        dateInput.value = t.date;
+        updateDateDayLabel(t.date);
+        amountInput.value = t.amount.toLocaleString('en-US');
+        checkAmountHighlight();
+        textInput.value = t.text || '';
+        charCounter.innerText = `${(t.text||'').length} / 70 ký tự`;
+
+        // Chọn đúng danh mục chính
+        const parentBtns = Array.from(parentContainer.children);
+        const matchParent = parentBtns.find(b => b.innerText === t.parentCategory);
+        if (matchParent) {
+            matchParent.click();
+            // Chờ renderSubCategories xong rồi chọn danh mục con
+            setTimeout(() => {
+                const subBtns = Array.from(subContainer.children);
+                const matchSub = subBtns.find(b => b.innerText === t.subCategory);
+                if (matchSub) matchSub.click();
+            }, 50);
+        }
+
+        // Đổi nút submit thành "Cập Nhật" và hiện nút huỷ
+        submitBtnEl.innerText = '💾 Cập Nhật Giao Dịch';
+        submitBtnEl.style.background = '#d97706';
+        document.getElementById('cancel-edit-btn').style.display = 'block';
+    }
+
+    function cancelEdit() {
+        editingId = null;
+        submitBtnEl.innerText = 'Ghi Vào Sổ Hệ Thống';
+        submitBtnEl.style.background = '';
+        document.getElementById('cancel-edit-btn').style.display = 'none';
+        amountInput.value = ''; textInput.value = '';
+        charCounter.innerText = '0 / 70 ký tự'; checkAmountHighlight();
+        setType('expense');
+        dateInput.value = getVNDate(); updateDateDayLabel(getVNDate());
+    }
+
+    function closeEditModal() { cancelEdit(); }
+    function saveEdit() {}
+    document.getElementById('edit-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeEditModal();
+    });
+
+    // === XUẤT JSON ===
+    function exportJSON() {
+        if (transactions.length === 0) return alert('Chưa có dữ liệu để xuất!');
+        const json = JSON.stringify(transactions, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const d = new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
+        a.href = url;
+        a.download = `so-thu-chi-backup-${d}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
     }
 
     // === DARK MODE ===
