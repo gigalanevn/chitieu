@@ -158,8 +158,7 @@
         .action-btns { display: flex; gap: 4px; align-items: center; }
         .edit-btn { background: none; border: none; font-size: 14px; padding: 0 4px; cursor: pointer; }
         .delete-btn { background: none; border: none; font-size: 14px; padding: 0 4px; cursor: pointer; color: #e74c3c; }
-        /* Desktop: hiện nút xóa. Mobile cảm ứng: ẩn, dùng swipe */
-        @media (hover: none) and (pointer: coarse) { .delete-btn { display: none; } }
+        /* Nút xóa hiện trên cả mobile và desktop */
         .char-count { font-size: 10px; color: var(--text-muted); text-align: right; display: block; margin-top: 1px; }
         .config-section { background: var(--bg-config-section); padding: 10px; border: 1px solid var(--border-main); border-radius: 8px; margin-bottom: 12px; transition: background 0.3s; }
         .config-section h4 { margin: 0 0 8px 0; font-size: 13px; color: var(--primary-color); }
@@ -230,8 +229,8 @@
                     <input type="text" id="text" maxlength="70" placeholder="Ghi chú thêm..." oninput="updateCharCount(this)" />
                     <span class="char-count" id="char-counter">0 / 70 ký tự</span>
                 </div>
-                <button type="button" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none;width:100%;padding:9px;background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;font-weight:bold;margin-bottom:6px;">✕ Huỷ sửa — Quay lại nhập mới</button>
                 <button type="submit" class="submit-btn" id="submit-btn-el">Ghi Vào Sổ Hệ Thống</button>
+                <button type="button" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none;width:100%;padding:9px;background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;font-weight:bold;margin-top:6px;">✕ Huỷ sửa — Quay lại nhập mới</button>
             </form>
         </div>
 
@@ -315,9 +314,8 @@
                 <input type="file" id="importJsonFile" accept=".json" style="display:none;">
                 <!-- Hướng dẫn xóa -->
                 <div style="font-size:10px;color:var(--text-muted);margin:4px 0 6px;display:flex;gap:8px;">
-                    <span> Vuốt trái → bấm 🗑️ xóa</span>
-                    
-                    <span>✏️ Sửa giao dịch</span>
+                    <span>📱 Bấm 🗑️ rồi vuốt trái để xóa</span>
+                    <span>✏️ Bấm để sửa</span>
                 </div>
                 <ul id="list" class="history-list"></ul>
             </div>
@@ -371,7 +369,7 @@
 
     <div class="excel-tab-bar">
         <div class="excel-tab active-tab" onclick="switchSheet('sheet-input', this)">
-            <div class="excel-tab-icon">📝</div><div>Nhập Liệu</div>
+            <div class="excel-tab-icon">📝</div><div>Nhập Thu Chi</div>
         </div>
         <div class="excel-tab" onclick="switchSheet('sheet-report', this)">
             <div class="excel-tab-icon">📊</div><div>Tổng Quan</div>
@@ -765,9 +763,10 @@
                 <span style="font-weight:600;color:${t.type==='income'?'var(--income-color)':'var(--expense-color)'}">${t.type==='income'?'+':'-'}${t.amount.toLocaleString('vi-VN')}đ</span>
                 <div class="action-btns">
                     <button class="edit-btn" onclick="openEditModal(${t.id})">✏️</button>
-                    <button class="delete-btn" onclick="confirmDelete(${t.id})">🗑️</button>
+                    <button class="delete-btn" onclick="handleDeleteBtn(event,${t.id})">🗑️</button>
                 </div>`;
             wrapper.appendChild(li);
+            wrapperMap[t.id] = wrapper;
             setupSwipeDelete(li, bgDel, t.id);
             list.appendChild(wrapper);
         });
@@ -863,6 +862,38 @@
                 else { li.style.transform = 'translateX(0)'; }
             }
         });
+    }
+
+    // Map id → wrapper để trigger swipe từ nút xóa
+    const wrapperMap = {};
+
+    function handleDeleteBtn(e, id) {
+        const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+        if (isTouchDevice) {
+            // Mobile: bấm nút → trigger swipe reveal
+            e.stopPropagation();
+            const wrapper = wrapperMap[id];
+            if (!wrapper) return;
+            const li = wrapper.querySelector('li');
+            if (!li) return;
+            if (openSwipeWrapper === wrapper) {
+                // Đã mở → đóng lại
+                li.style.transition = 'transform 0.18s ease';
+                li.style.transform = 'translateX(0)';
+                openSwipeWrapper = null;
+            } else {
+                if (openSwipeWrapper) {
+                    const prev = openSwipeWrapper.querySelector('li');
+                    if (prev) { prev.style.transition = 'transform 0.18s ease'; prev.style.transform = 'translateX(0)'; }
+                }
+                li.style.transition = 'transform 0.18s ease';
+                li.style.transform = 'translateX(-90px)';
+                openSwipeWrapper = wrapper;
+            }
+        } else {
+            // Desktop: confirm xóa bình thường
+            confirmDelete(id);
+        }
     }
 
     function confirmDelete(id) {
