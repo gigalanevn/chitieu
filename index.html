@@ -495,6 +495,11 @@
     function getVNDate() {
         return new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
     }
+    function getYesterdaysDate() {
+        const d = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' }));
+        d.setDate(d.getDate() - 1);
+        return d.toLocaleDateString('fr-CA');
+    }
     function refreshDateIfNeeded() {
         const currentDate = getVNDate();
         const dateInput = document.getElementById('date');
@@ -623,8 +628,13 @@
         if (!dateStr) { el.innerText = ''; return; }
         const days = ['Chủ Nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'];
         const d = new Date(dateStr);
-        const isToday = dateStr === getVNDate();
-        el.innerText = isToday ? `${days[d.getDay()]} — Hôm nay` : days[d.getDay()];
+        if (dateStr === getVNDate()) {
+            el.innerText = `${days[d.getDay()]} — Hôm nay`;
+        } else if (dateStr === getYesterdaysDate()) {
+            el.innerText = `${days[d.getDay()]} — Hôm qua`;
+        } else {
+            el.innerText = days[d.getDay()];
+        }
     }
 
     function onSearchInput() {
@@ -922,7 +932,14 @@
                 const dateObj = new Date(t.date);
                 const days = ['Chủ Nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'];
                 const isToday = t.date === getVNDate();
-                const dayLabel = isToday ? `🔴 Hôm nay (${days[dateObj.getDay()]}) ${d}/${m}` : `${days[dateObj.getDay()]} ${d}/${m}`;
+                const isYesterday = t.date === getYesterdaysDate();
+                let dayLabel = '';
+                if (isToday) {
+                    dayLabel = `🔴 Hôm nay (${days[dateObj.getDay()]}) ${d}/${m}`;
+                } else if (isYesterday) {
+                    dayLabel = `🟠 Hôm qua (${days[dateObj.getDay()]}) ${d}/${m}`;
+                } else {
+                    dayLabel = `${days[dateObj.getDay()]} ${d}/${m}`;}
 
                 let summaryHtml = '';
                 if (inc > 0) summaryHtml += `<span style="color:var(--income-color);font-size:10px">+${inc.toLocaleString('vi-VN')}</span>`;
@@ -956,7 +973,7 @@
                 <span style="font-weight:600;color:${t.type==='income'?'var(--income-color)':'var(--expense-color)'}">${t.type==='income'?'+':'-'}${t.amount.toLocaleString('vi-VN')}đ</span>
                 <div class="action-btns">
                     <button class="edit-btn" onclick="openEditModal(${t.id})" title="Sửa">✏️</button>
-                    <button class="delete-btn" onclick="removeTransaction(${t.id})" title="Xóa">🗑️</button>
+                    <button class="delete-btn" onclick="removeTransaction(${t.id})" onclick="triggerDeleteAnimation(t.id, this.closest('li'))" title="Xóa">🗑️</button>
                 </div>
             `;
             wrapper.appendChild(li);
@@ -1046,12 +1063,22 @@
                 li.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
                 li.style.transform = 'translateX(-100%)';
                 li.style.opacity = '0';
-                setTimeout(() => { removeTransaction(id); }, 220);
+                triggerDeleteAnimation(id, li);
             } else {
                 li.style.transition = 'transform 0.2s ease';
                 li.style.transform = 'translateX(0)';
             }
         });
+    }
+
+    function triggerDeleteAnimation(id, li) {
+        if (!li) return;
+        li.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+        li.style.transform = 'translateX(-100%)';
+        li.style.opacity = '0';
+        setTimeout(() => {
+            removeTransaction(id);
+        }, 220);
     }
 
     function removeTransaction(id) {
