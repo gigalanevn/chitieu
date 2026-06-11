@@ -14,8 +14,6 @@
             --light-color: #f8f9fa;
             --border-color: #dee2e6;
             --shopee-color: #ee4d2d;
-
-            /* Light mode tokens */
             --bg-body: #f3f3f3;
             --bg-sheet: #ffffff;
             --bg-input: #ffffff;
@@ -45,7 +43,6 @@
             --day-band-0-border: #d1d5db;
             --day-band-1-border: #93c5fd;
         }
-
         body.dark-mode {
             --bg-body: #0f1117;
             --bg-sheet: #1a1d27;
@@ -76,19 +73,13 @@
             --day-band-0-border: #2a4035;
             --day-band-1-border: #2a3560;
         }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         body {
             font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-body);
-            margin: 0; padding: 0; color: var(--text-main);
+            background-color: var(--bg-body); margin: 0; padding: 0; color: var(--text-main);
             height: 100vh; height: 100dvh; overflow: hidden;
-            display: flex; flex-direction: column;
-            transition: background-color 0.3s, color 0.3s;
+            display: flex; flex-direction: column; transition: background-color 0.3s, color 0.3s;
         }
-
-        /* TOP BAR */
         .top-mini-bar {
             background: var(--primary-color); color: white; padding: 10px 15px;
             display: flex; justify-content: space-between; align-items: center;
@@ -104,87 +95,57 @@
         .top-mini-bar .quick-balance { text-align: right; }
         .top-mini-bar .quick-balance span { font-size: 11px; opacity: 0.8; display: block; }
         .top-mini-bar .quick-balance strong { font-size: 16px; }
-
-        /* DARK MODE TOGGLE */
         .dark-toggle-btn {
             background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
             color: white; border-radius: 20px; padding: 4px 10px; font-size: 13px;
-            cursor: pointer; display: flex; align-items: center; gap: 4px;
-            transition: background 0.2s;
+            cursor: pointer; display: flex; align-items: center; gap: 4px; transition: background 0.2s;
         }
-        .dark-toggle-btn:active { background: rgba(255,255,255,0.25); }
-
-        /* CONTAINER SHEETS */
         .sheet-container { flex: 1; position: relative; overflow: hidden; background: var(--bg-sheet); transition: background 0.3s; }
         .excel-sheet { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: none; flex-direction: column; padding: 12px; }
         .excel-sheet.active-sheet { display: flex; }
-
-        /* TABS ĐÁY MÀN HÌNH */
         .excel-tab-bar { height: 52px; background: var(--bg-tab-bar); border-top: 1px solid var(--border-main); display: flex; z-index: 10; padding-bottom: env(safe-area-inset-bottom); transition: background 0.3s; }
         .excel-tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--text-sub); cursor: pointer; border-right: 1px solid var(--border-main); background: var(--bg-tab); transition: all 0.2s; }
         .excel-tab:last-child { border-right: none; }
         .excel-tab.active-tab { background: var(--bg-tab-active); color: var(--primary-color); border-top: 3px solid var(--primary-color); padding-top: 0; }
         .excel-tab-icon { font-size: 16px; margin-bottom: 2px; }
-
-        /* FORM */
         .form-compact-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
         .form-group-full { margin-bottom: 6px; }
         label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 12px; color: var(--text-label); }
         input, select { width: 100%; padding: 8px 10px; border: 1px solid var(--border-input); border-radius: 6px; font-size: 14px; background: var(--bg-input); color: var(--text-main); transition: background 0.3s, border-color 0.3s, color 0.3s; }
-        
-        input#amount.has-value { border: 2px solid var(--primary-color) !important; background-color: var(--bg-input); box-shadow: 0 0 6px rgba(16, 124, 65, 0.3); font-weight: bold; font-size: 18px; color: var(--primary-color); }
-
+        input#amount.has-value { border: 2px solid var(--primary-color) !important; background-color: var(--bg-input); box-shadow: 0 0 6px rgba(16,124,65,0.3); font-weight: bold; font-size: 18px; color: var(--primary-color); }
         .type-btn-group { display: flex; gap: 8px; margin-bottom: 6px; }
         .type-btn { padding: 10px; border-radius: 6px; flex: 1; font-weight: bold; border: 1px solid var(--border-input); background: var(--bg-input); color: var(--text-main); font-size: 14px; transition: background 0.3s; }
         .expense-active { background-color: var(--expense-color) !important; border-color: #e74c3c !important; color: white !important; }
         .income-active { background-color: var(--income-color) !important; border-color: #2ecc71 !important; color: white !important; }
-
-        /* Ô CHỨA BUTTON CUỘN */
         .scrollable-btn-box { max-height: 105px; overflow-y: auto; border: 1px solid var(--border-btn); border-radius: 6px; padding: 5px; background: var(--bg-btn-box); }
         .grid-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
         .grid-buttons button { background: var(--bg-grid-btn); border: 1px solid var(--border-btn); padding: 8px 2px; border-radius: 4px; font-size: 12px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; color: var(--text-main); transition: background 0.3s; }
-
-        /* BÀN PHÍM NHANH */
         .quick-amt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 2px; }
         .quick-amt-grid button { background: var(--bg-quick-amt); border: 1px solid var(--border-quick-amt); padding: 6px 0; border-radius: 4px; font-size: 12px; color: var(--text-quick-amt); font-weight: bold; }
         .quick-amt-grid button.clear-btn { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
         body.dark-mode .quick-amt-grid button.clear-btn { background: #3d1a1a; color: #f87171; border-color: #7f1d1d; }
-
         .submit-btn { width: 100%; padding: 11px; background: var(--primary-color); color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; margin-top: auto; transition: background 0.1s; }
         .submit-btn:active { background: #0e6233; }
-
-        /* REPORT PANEL */
         .scrollable-report-wrapper { display: flex; flex-direction: column; flex: 1; overflow-y: auto; }
         .excel-card-box { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
         .excel-card { background: var(--bg-card); border: 1px solid var(--border-main); padding: 10px 8px; border-radius: 6px; transition: background 0.3s; }
         .excel-card h4 { margin: 0 0 4px 0; font-size: 11px; color: var(--text-card-label); }
         .excel-card p { margin: 0; font-size: 16px; font-weight: bold; }
-
         .insight-banner { background: #fff3cd; border: 1px solid #ffeba2; color: #856404; padding: 8px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         body.dark-mode .insight-banner { background: #2d2510; border-color: #5a4a10; color: #fbbf24; }
-
         .filter-panel { background: var(--bg-filter); padding: 8px; border-radius: 8px; margin-bottom: 10px; transition: background 0.3s; }
         .filter-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
         .filter-row label { min-width: 85px; margin-bottom: 0; font-size: 12px; font-weight: bold; color: var(--text-label); }
         .filter-row select, .filter-row input[type="date"], .filter-row input[type="text"] { padding: 4px 8px; height: 32px; font-size: 12px; border-radius: 4px; border: 1px solid var(--border-input); background: var(--bg-input); color: var(--text-main); }
-
-        /* BIỂU ĐỒ VÀ NÚT ẨN HIỆN */
         .chart-toggle-zone { display: flex; justify-content: flex-end; margin-bottom: 6px; }
         .toggle-chart-btn { background: var(--bg-cat-tag); border: 1px solid var(--border-btn); font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 4px; cursor: pointer; color: var(--text-sub); }
         .chart-container-box { height: 110px; margin-bottom: 10px; position: relative; display: none; }
-
         .history-section-title { font-size: 13px; font-weight: bold; color: var(--text-sub); margin: 5px 0; padding-bottom: 4px; border-bottom: 1px dashed var(--border-main); }
         .history-list { list-style: none; padding: 0; margin: 0; }
-        .history-list li { display: flex; justify-content: space-between; align-items: center; padding: 10px; margin-bottom: 3px; border-radius: 8px; border-left: 4px solid #ccc; font-size: 13px; transition: background 0.3s; }
-        /* Xen kẽ màu nền theo ngày - tương phản mạnh */
+        .history-list li { display: flex; justify-content: space-between; align-items: center; padding: 10px; margin-bottom: 0; border-radius: 8px; border-left: 4px solid #ccc; font-size: 13px; transition: background 0.3s; }
         .history-list li.day-band-0 { background: var(--day-band-0); border-bottom: 2px solid var(--day-band-0-border); }
         .history-list li.day-band-1 { background: var(--day-band-1); border-bottom: 2px solid var(--day-band-1-border); }
-        /* Nhãn ngày phân cách */
-        .day-header {
-            font-size: 11px; font-weight: 700; padding: 5px 8px; margin: 8px 0 3px 0;
-            border-radius: 4px; display: flex; align-items: center; justify-content: space-between;
-            gap: 4px; letter-spacing: 0.3px;
-        }
+        .day-header { font-size: 11px; font-weight: 700; padding: 5px 8px; margin: 8px 0 3px 0; border-radius: 4px; display: flex; align-items: center; justify-content: space-between; gap: 4px; letter-spacing: 0.3px; }
         .day-header.band-0 { background: #d1d5db; color: #374151; }
         .day-header.band-1 { background: #93c5fd; color: #1e3a8a; }
         body.dark-mode .day-header.band-0 { background: #2a4035; color: #86efac; }
@@ -193,44 +154,17 @@
         .history-list li.expense { border-left-color: var(--expense-color); }
         .info-span { display: flex; flex-direction: column; max-width: 60%; }
         .info-span strong { white-space: normal; word-break: break-all; color: var(--text-main); }
-        .date-span { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-        /* Action buttons */
         .action-btns { display: flex; gap: 4px; align-items: center; }
         .edit-btn { background: none; border: none; font-size: 14px; padding: 0 4px; cursor: pointer; }
         .delete-btn { background: none; border: none; font-size: 14px; padding: 0 4px; cursor: pointer; color: #e74c3c; }
-        /* Mobile cảm ứng: ẩn nút xóa, dùng swipe. Desktop chuột: hiện nút xóa */
+        /* Desktop: hiện nút xóa. Mobile cảm ứng: ẩn, dùng swipe */
         @media (hover: none) and (pointer: coarse) { .delete-btn { display: none; } }
-        .char-count { font-size: 10px; color: var(--text-muted); text-align: right; display: block; margin-top: 1px;}
-
-        /* EDIT MODAL */
-        .modal-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-            z-index: 999; align-items: flex-end; justify-content: center;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal-box {
-            background: var(--bg-sheet); border-radius: 16px 16px 0 0;
-            padding: 20px 16px 32px; width: 100%; max-width: 480px;
-            animation: slideUp 0.2s ease;
-        }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .modal-box h3 { margin: 0 0 14px 0; font-size: 15px; color: var(--primary-color); }
-        .modal-row { margin-bottom: 10px; }
-        .modal-row label { font-size: 12px; font-weight: 600; color: var(--text-label); display: block; margin-bottom: 4px; }
-        .modal-row input { width: 100%; padding: 8px 10px; border: 1px solid var(--border-input); border-radius: 6px; font-size: 14px; background: var(--bg-input); color: var(--text-main); }
-        .modal-btns { display: flex; gap: 8px; margin-top: 14px; }
-        .modal-btns button { flex: 1; padding: 11px; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; }
-        .btn-save { background: var(--primary-color); color: white; }
-        .btn-cancel { background: var(--bg-filter); color: var(--text-main); }
-
-        /* CONFIG PANEL */
+        .char-count { font-size: 10px; color: var(--text-muted); text-align: right; display: block; margin-top: 1px; }
         .config-section { background: var(--bg-config-section); padding: 10px; border: 1px solid var(--border-main); border-radius: 8px; margin-bottom: 12px; transition: background 0.3s; }
         .config-section h4 { margin: 0 0 8px 0; font-size: 13px; color: var(--primary-color); }
         .config-row { display: flex; gap: 6px; margin-bottom: 8px; }
         .config-row input, .config-row select { height: 36px; padding: 6px; font-size: 13px; }
         .config-btn { background: var(--primary-color); color: white; border: none; border-radius: 6px; padding: 0 12px; font-weight: bold; font-size: 13px; white-space: nowrap; }
-        
-        /* DANH SÁCH THẺ HỖ TRỢ KÉO THẢ */
         .cat-list-tags { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; max-height: 180px; overflow-y: auto; padding: 2px; }
         .cat-tag { background: var(--bg-cat-tag); padding: 8px 12px; border-radius: 6px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; cursor: grab; user-select: none; border: 1px solid var(--border-btn); color: var(--text-main); }
         .cat-tag:active { cursor: grabbing; background: var(--bg-cat-tag-parent); }
@@ -239,15 +173,12 @@
     </style>
 </head>
 <body>
-
     <div class="top-mini-bar">
         <div class="top-left-zone">
             <div class="title">Sổ Thu Chi</div>
-            <a href="https://s.shopee.vn/AAAUhiQ8ae" target="_blank" rel="noopener noreferrer" class="shopee-link">
-                🛍️ Shopee
-            </a>
+            <a href="https://s.shopee.vn/AAAUhiQ8ae" target="_blank" rel="noopener noreferrer" class="shopee-link">🛍️ Shopee</a>
         </div>
-        <div style="display:flex; align-items:center; gap:8px;">
+        <div style="display:flex;align-items:center;gap:8px;">
             <button class="dark-toggle-btn" id="dark-toggle-btn" onclick="toggleDarkMode()">🌙</button>
             <div class="quick-balance">
                 <span>Số dư tài khoản</span>
@@ -257,26 +188,23 @@
     </div>
 
     <div class="sheet-container">
-        
         <div id="sheet-input" class="excel-sheet active-sheet">
             <div class="type-btn-group">
                 <button type="button" id="btn-expense" class="type-btn">Chi Tiêu (-)</button>
                 <button type="button" id="btn-income" class="type-btn">Thu Nhập (+)</button>
             </div>
-
-            <form id="transaction-form" style="display: flex; flex-direction: column; flex: 1;">
+            <form id="transaction-form" style="display:flex;flex-direction:column;flex:1;">
                 <div class="form-compact-group">
                     <div>
                         <label>Ngày giao dịch</label>
-                        <input type="date" id="date" required onchange="syncFilterMonthAndYear(this.value); updateDateDayLabel(this.value)" />
-                        <span id="date-day-label" style="font-size:11px; font-weight:700; color:var(--primary-color); margin-top:3px; display:block;"></span>
+                        <input type="date" id="date" required onchange="syncFilterMonthAndYear(this.value);updateDateDayLabel(this.value)" />
+                        <span id="date-day-label" style="font-size:11px;font-weight:700;color:var(--primary-color);margin-top:3px;display:block;"></span>
                     </div>
                     <div>
                         <label>Số tiền có thể cộng dồn</label>
                         <input type="text" inputmode="numeric" id="amount" placeholder="Gõ hoặc chọn nhanh..." required oninput="formatCurrencyInput(this)" />
                     </div>
                 </div>
-
                 <div class="quick-amt-grid">
                     <button type="button" onclick="quickAddAmount(1000)">+1k</button>
                     <button type="button" onclick="quickAddAmount(5000)">+5k</button>
@@ -288,28 +216,20 @@
                     <button type="button" onclick="quickAddAmount(500000)">+500k</button>
                     <button type="button" class="clear-btn" onclick="clearAmountInput()">Xóa sạch</button>
                 </div>
-
-                <div class="form-group-full" style="margin-top: 6px;">
+                <div class="form-group-full" style="margin-top:6px;">
                     <label>Danh Mục Chính</label>
-                    <div class="scrollable-btn-box">
-                        <div id="parent-category-container" class="grid-buttons"></div>
-                    </div>
+                    <div class="scrollable-btn-box"><div id="parent-category-container" class="grid-buttons"></div></div>
                 </div>
-
-                <div class="form-group-full" id="sub-category-wrapper" style="display: none;">
-                    <label style="color: var(--primary-color);">Danh Mục Con</label>
-                    <div class="scrollable-btn-box" style="border-color: var(--primary-color);">
-                        <div id="sub-category-container" class="grid-buttons"></div>
-                    </div>
+                <div class="form-group-full" id="sub-category-wrapper" style="display:none;">
+                    <label style="color:var(--primary-color);">Danh Mục Con</label>
+                    <div class="scrollable-btn-box" style="border-color:var(--primary-color);"><div id="sub-category-container" class="grid-buttons"></div></div>
                 </div>
-
-                <div class="form-group-full" style="margin-top: 2px;">
+                <div class="form-group-full" style="margin-top:2px;">
                     <label>Ghi chú (Tối đa 70 ký tự)</label>
                     <input type="text" id="text" maxlength="70" placeholder="Ghi chú thêm..." oninput="updateCharCount(this)" />
                     <span class="char-count" id="char-counter">0 / 70 ký tự</span>
                 </div>
-
-                <button type="button" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none; width:100%; padding:9px; background:#f1f5f9; color:#64748b; border:1px solid #cbd5e1; border-radius:6px; font-size:13px; font-weight:bold; margin-bottom:6px;">✕ Huỷ sửa — Quay lại nhập mới</button>
+                <button type="button" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none;width:100%;padding:9px;background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;font-weight:bold;margin-bottom:6px;">✕ Huỷ sửa — Quay lại nhập mới</button>
                 <button type="submit" class="submit-btn" id="submit-btn-el">Ghi Vào Sổ Hệ Thống</button>
             </form>
         </div>
@@ -319,15 +239,14 @@
                 <div class="filter-panel">
                     <div class="filter-row">
                         <label>Chế độ xem:</label>
-                        <select id="filter-time-mode" onchange="toggleTimeMode()" style="flex: 1;">
+                        <select id="filter-time-mode" onchange="toggleTimeMode()" style="flex:1;">
                             <option value="month">Xem theo Tháng/Năm cố định</option>
                             <option value="range">Xem theo Khoảng ngày tùy chọn</option>
                         </select>
                     </div>
-
                     <div id="box-filter-month" class="filter-row">
                         <label>Chọn tháng:</label>
-                        <div style="display: flex; gap: 4px; flex: 1;">
+                        <div style="display:flex;gap:4px;flex:1;">
                             <select id="filter-only-month" onchange="init()">
                                 <option value="01">Tháng 1</option><option value="02">Tháng 2</option>
                                 <option value="03">Tháng 3</option><option value="04">Tháng 4</option>
@@ -343,116 +262,93 @@
                             </select>
                         </div>
                     </div>
-
-                    <div id="box-filter-range" style="display: none; flex-direction: column; gap: 6px;">
+                    <div id="box-filter-range" style="display:none;flex-direction:column;gap:6px;">
                         <div class="filter-row">
                             <label>Từ ngày:</label>
-                            <input type="date" id="filter-start-date" onchange="init()" style="flex: 1;" />
+                            <input type="date" id="filter-start-date" onchange="init()" style="flex:1;" />
                         </div>
                         <div class="filter-row">
                             <label>Đến ngày:</label>
-                            <input type="date" id="filter-end-date" onchange="init()" style="flex: 1;" />
+                            <input type="date" id="filter-end-date" onchange="init()" style="flex:1;" />
                         </div>
                     </div>
-
-                    <div class="filter-row" style="margin-top: 4px; margin-bottom: 0;">
+                    <div class="filter-row" style="margin-top:4px;margin-bottom:0;">
                         <label>Tìm nội dung:</label>
-                        <div style="flex:1; position:relative; display:flex; align-items:center;">
-                            <input type="text" id="search-keyword" placeholder="Ví dụ: an sang, dien nuoc, luong..." oninput="onSearchInput()" style="width:100%; padding-right:28px;" />
-                            <button id="search-clear-btn" onclick="clearSearch()" style="display:none; position:absolute; right:6px; background:none; border:none; font-size:15px; color:#94a3b8; cursor:pointer; padding:0; line-height:1;">✕</button>
+                        <div style="flex:1;position:relative;display:flex;align-items:center;">
+                            <input type="text" id="search-keyword" placeholder="Ví dụ: an sang, dien nuoc, luong..." oninput="onSearchInput()" style="width:100%;padding-right:28px;" />
+                            <button id="search-clear-btn" onclick="clearSearch()" style="display:none;position:absolute;right:6px;background:none;border:none;font-size:15px;color:#94a3b8;cursor:pointer;padding:0;line-height:1;">✕</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="insight-banner">
-                    <span>🔥 Ngày chi nhiều nhất khoảng lọc:</span>
+                    <span>🔥 Ngày chi nhiều nhất:</span>
                     <span id="peak-expense-day">Chưa có dữ liệu</span>
                 </div>
 
                 <div class="excel-card-box">
-                    <div class="excel-card" style="border-left: 3px solid var(--income-color);">
+                    <div class="excel-card" style="border-left:3px solid var(--income-color);">
                         <h4>Tổng Thu Nhập</h4>
-                        <p id="total-income" style="color: var(--income-color);">0đ</p>
+                        <p id="total-income" style="color:var(--income-color);">0đ</p>
                     </div>
-                    <div class="excel-card" style="border-left: 3px solid var(--expense-color);">
+                    <div class="excel-card" style="border-left:3px solid var(--expense-color);">
                         <h4>Tổng Chi Tiêu</h4>
-                        <p id="total-expense" style="color: var(--expense-color);">0đ</p>
+                        <p id="total-expense" style="color:var(--expense-color);">0đ</p>
                     </div>
                 </div>
 
                 <div class="chart-toggle-zone">
-                    <button type="button" class="toggle-chart-btn" id="btn-toggle-chart" onclick="toggleChartVisibility()">🙉 Hiện biểu đồ</button>
+                    <button type="button" class="toggle-chart-btn" id="btn-toggle-chart" onclick="toggleChartVisibility()">👁️ Hiện biểu đồ</button>
                 </div>
                 <div class="chart-container-box" id="chart-wrapper-box">
                     <canvas id="expenseChart"></canvas>
                 </div>
 
                 <div class="history-section-title" style="display:flex;justify-content:space-between;align-items:center;">
-                    <span>Nhật Ký Chi Tiết Theo Bộ Lọc (Mới → Cũ)</span>
+                    <span>Nhật Ký (Mới → Cũ)</span>
                     <div style="display:flex;gap:5px;">
-<button onclick="importJsonFile.click()" style="background:#dcfce7;border:1px solid #86efac;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:bold;color:#166534;cursor:pointer;">📂 Nhập JSON</button>
-<button onclick="exportJSON()" style="background:#e2e8f0;border:1px solid #cbd5e1;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:bold;color:#475569;cursor:pointer;">💾 Xuất JSON</button>
-</div>
-<input type="file" id="importJsonFile" accept=".json" style="display:none;">
+                        <button onclick="document.getElementById('importJsonFile').click()" style="background:#dcfce7;border:1px solid #86efac;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:bold;color:#166534;cursor:pointer;">📂 Nhập JSON</button>
+                        <button onclick="exportJSON()" style="background:#e2e8f0;border:1px solid #cbd5e1;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:bold;color:#475569;cursor:pointer;">💾 Xuất JSON</button>
+                    </div>
+                </div>
+                <input type="file" id="importJsonFile" accept=".json" style="display:none;">
+                <!-- Hướng dẫn xóa -->
+                <div style="font-size:10px;color:var(--text-muted);margin:4px 0 6px;display:flex;gap:8px;">
+                    <span>📱 Vuốt trái → bấm 🗑️ xóa</span>
+                    <span>🖥️ Bấm 🗑️ xóa</span>
+                    <span>✏️ Sửa giao dịch</span>
                 </div>
                 <ul id="list" class="history-list"></ul>
             </div>
         </div>
 
-        <!-- EDIT MODAL -->
-        <div class="modal-overlay" id="edit-modal">
-            <div class="modal-box">
-                <h3>✏️ Sửa Giao Dịch</h3>
-                <input type="hidden" id="edit-id" />
-                <div class="modal-row">
-                    <label>Ngày</label>
-                    <input type="date" id="edit-date" />
-                </div>
-                <div class="modal-row">
-                    <label>Số tiền</label>
-                    <input type="text" inputmode="numeric" id="edit-amount" oninput="formatCurrencyInput(this)" />
-                </div>
-                <div class="modal-row">
-                    <label>Ghi chú</label>
-                    <input type="text" id="edit-text" maxlength="70" placeholder="Ghi chú..." />
-                </div>
-                <div class="modal-btns">
-                    <button class="btn-cancel" onclick="closeEditModal()">Huỷ</button>
-                    <button class="btn-save" onclick="saveEdit()">Lưu lại</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="sheet-settings" class="excel-sheet" style="overflow-y: auto;">
-            <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #334155;">⚙️ Định Nghĩa & Kéo Thả Thứ Tự Thẻ</h3>
-            
+        <div id="sheet-settings" class="excel-sheet" style="overflow-y:auto;">
+            <h3 style="margin:0 0 10px 0;font-size:15px;color:#334155;">⚙️ Định Nghĩa & Kéo Thả Thứ Tự Thẻ</h3>
             <div class="config-section">
                 <h4>1. Thêm Danh Mục Chính Mới</h4>
                 <div class="config-row">
-                    <select id="setup-type-parent" style="flex: 0.7;">
+                    <select id="setup-type-parent" style="flex:0.7;">
                         <option value="expense">Chi Tiêu (-)</option>
                         <option value="income">Thu Nhập (+)</option>
                     </select>
-                    <input type="text" id="setup-new-parent" placeholder="Tên danh mục..." style="flex: 1.3;">
+                    <input type="text" id="setup-new-parent" placeholder="Tên danh mục..." style="flex:1.3;">
                     <button type="button" class="config-btn" onclick="addNewParentCategory()">Thêm</button>
                 </div>
             </div>
-
             <div class="config-section">
                 <h4>2. Thêm Danh Mục Con</h4>
                 <div class="config-row">
-                    <select id="setup-type-sub" style="flex: 0.6;" onchange="updateParentSelectConfig()">
+                    <select id="setup-type-sub" style="flex:0.6;" onchange="updateParentSelectConfig()">
                         <option value="expense">Chi Tiêu</option>
                         <option value="income">Thu Nhập</option>
                     </select>
-                    <select id="setup-select-parent" style="flex: 1;"></select>
+                    <select id="setup-select-parent" style="flex:1;"></select>
                 </div>
                 <div class="config-row">
-                    <input type="text" id="setup-new-sub" placeholder="Tên mục con..." style="flex: 2;">
+                    <input type="text" id="setup-new-sub" placeholder="Tên mục con..." style="flex:2;">
                     <button type="button" class="config-btn" onclick="addNewSubCategory()">Thêm con</button>
                 </div>
             </div>
-
             <div class="config-section">
                 <h4>3. Thứ Tự Hiển Thị (Kéo thả để sắp xếp)</h4>
                 <select id="setup-view-type" onchange="renderConfigTagsList()">
@@ -461,60 +357,54 @@
                 </select>
                 <div id="config-tags-display-area" class="cat-list-tags"></div>
             </div>
-            
             <div class="config-section">
                 <h4>4. Sao Lưu & Khôi Phục Danh Mục</h4>
-                <div style="display:flex; gap:8px;">
-                    <button onclick="exportCategoriesJSON()" style="flex:1; background:#cbd5e1; border:none; border-radius:6px; padding:8px; font-weight:bold; color:#475569; cursor:pointer;">💾 Xuất Danh Mục (.json)</button>
-                    <button onclick="importCatFile.click()" style="flex:1; background:#dcfce7; border:none; border-radius:6px; padding:8px; font-weight:bold; color:#166534; cursor:pointer;">📂 Nhập Danh Mục (.json)</button>
+                <div style="display:flex;gap:8px;">
+                    <button onclick="exportCategoriesJSON()" style="flex:1;background:#cbd5e1;border:none;border-radius:6px;padding:8px;font-weight:bold;color:#475569;cursor:pointer;">💾 Xuất Danh Mục</button>
+                    <button onclick="document.getElementById('importCatFile').click()" style="flex:1;background:#dcfce7;border:none;border-radius:6px;padding:8px;font-weight:bold;color:#166534;cursor:pointer;">📂 Nhập Danh Mục</button>
                 </div>
                 <input type="file" id="importCatFile" accept=".json" style="display:none;" onchange="importCategoriesJSON(event)">
             </div>
         </div>
-
     </div>
 
     <div class="excel-tab-bar">
         <div class="excel-tab active-tab" onclick="switchSheet('sheet-input', this)">
-            <div class="excel-tab-icon">📝</div>
-            <div>Nhập Liệu</div>
+            <div class="excel-tab-icon">📝</div><div>Nhập Liệu</div>
         </div>
         <div class="excel-tab" onclick="switchSheet('sheet-report', this)">
-            <div class="excel-tab-icon">📊</div>
-            <div>Tổng Quan</div>
+            <div class="excel-tab-icon">📊</div><div>Tổng Quan</div>
         </div>
         <div class="excel-tab" onclick="switchSheet('sheet-settings', this)">
-            <div class="excel-tab-icon">⚙️</div>
-            <div>Sửa Danh Mục</div>
+            <div class="excel-tab-icon">⚙️</div><div>Sửa Danh Mục</div>
         </div>
     </div>
 
 <script>
     const MAX_AMOUNT = 10000000000;
-// === TỰ ĐỘNG CẬP NHẬT NGÀY KHI CHUYỂN TAB HOẶC QUA NGÀY MỚI (GIỜ VN) ===
+
     function getVNDate() {
         return new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
     }
-    function getYesterdaysDate() {
+    function getYesterdayVN() {
         const d = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' }));
         d.setDate(d.getDate() - 1);
         return d.toLocaleDateString('fr-CA');
     }
     function refreshDateIfNeeded() {
         const currentDate = getVNDate();
-        const dateInput = document.getElementById('date');
-        if (dateInput && dateInput.value !== currentDate) {
-            dateInput.value = currentDate;
+        const di = document.getElementById('date');
+        if (di && di.value !== currentDate) {
+            di.value = currentDate;
             syncFilterMonthAndYear(currentDate);
             updateDateDayLabel(currentDate);
         }
     }
-    // Khi chuyển sang tab này → cập nhật ngay lập tức
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') refreshDateIfNeeded();
     });
-    // Dự phòng: kiểm tra mỗi phút nếu tab luôn mở
     setInterval(refreshDateIfNeeded, 60000);
+
     const defaultCategoryTree = {
         expense: [
             { parent: "Ăn uống hàng ngày", subs: ["Ăn sáng", "Ăn trưa", "Ăn tối", "Mục khác"] },
@@ -531,60 +421,41 @@
             { parent: "Thu khác", subs: ["Khoản khác"] }
         ]
     };
-
     let categoryTree = JSON.parse(localStorage.getItem('user_category_tree_v14')) || defaultCategoryTree;
-
     function saveCategoryTree() {
         localStorage.setItem('user_category_tree_v14', JSON.stringify(categoryTree));
         setType(currentType);
     }
-
-    // === HÀM XUẤT NHẬP DANH MỤC ===
     function exportCategoriesJSON() {
-        const json = JSON.stringify(categoryTree, null, 2);
-        const blob = new Blob([json], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
+        const blob = new Blob([JSON.stringify(categoryTree, null, 2)], { type: 'application/json' });
         const a = document.createElement('a');
-        const d = new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
-        a.href = url;
-        a.download = `danh-muc-thu-chi-${d}.json`;
+        a.href = URL.createObjectURL(blob);
+        a.download = `danh-muc-${getVNDate()}.json`;
         a.click();
-        URL.revokeObjectURL(url);
     }
-
     function importCategoriesJSON(event) {
-        const file = event.target.files[0];
-        if (!file) return;
+        const file = event.target.files[0]; if (!file) return;
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = e => {
             try {
-                const importedData = JSON.parse(e.target.result);
-                if (typeof importedData !== 'object' || !importedData.expense || !importedData.income) {
-                    alert("Cấu trúc file danh mục JSON không hợp lệ!");
-                    return;
-                }
-                if (!confirm("Bạn có muốn ghi đè toàn bộ cấu trúc danh mục hiện tại không?")) {
-                    return;
-                }
-                categoryTree = importedData;
-                saveCategoryTree();
-                updateParentSelectConfig();
-                renderConfigTagsList();
-                alert("✅ Nhập cấu trúc danh mục thành công!");
-            } catch(err) {
-                alert("❌ File JSON không đúng định dạng!");
-            }
+                const d = JSON.parse(e.target.result);
+                if (!d.expense || !d.income) { alert('File không hợp lệ!'); return; }
+                if (!confirm('Ghi đè toàn bộ danh mục hiện tại?')) return;
+                categoryTree = d; saveCategoryTree(); updateParentSelectConfig(); renderConfigTagsList();
+                alert('✅ Nhập danh mục thành công!');
+            } catch { alert('❌ File JSON lỗi!'); }
         };
-        reader.readAsText(file);
-        event.target.value = ''; // Reset input file
+        reader.readAsText(file); event.target.value = '';
     }
 
-    let currentType = 'expense'; let selectedParent = ''; let selectedSub = ''; let myChart = null;
-
-    const list = document.getElementById('list'); const form = document.getElementById('transaction-form');
-    const dateInput = document.getElementById('date'); const amountInput = document.getElementById('amount');
-    const textInput = document.getElementById('text'); const filterOnlyMonth = document.getElementById('filter-only-month');
-    const filterOnlyYear = document.getElementById('filter-only-year'); 
+    let currentType = 'expense', selectedParent = '', selectedSub = '', myChart = null;
+    const list = document.getElementById('list');
+    const form = document.getElementById('transaction-form');
+    const dateInput = document.getElementById('date');
+    const amountInput = document.getElementById('amount');
+    const textInput = document.getElementById('text');
+    const filterOnlyMonth = document.getElementById('filter-only-month');
+    const filterOnlyYear = document.getElementById('filter-only-year');
     const filterTimeMode = document.getElementById('filter-time-mode');
     const boxFilterMonth = document.getElementById('box-filter-month');
     const boxFilterRange = document.getElementById('box-filter-range');
@@ -594,16 +465,16 @@
     const chartWrapperBox = document.getElementById('chart-wrapper-box');
     const btnToggleChart = document.getElementById('btn-toggle-chart');
     const charCounter = document.getElementById('char-counter');
-    const parentContainer = document.getElementById('parent-category-container'); const subWrapper = document.getElementById('sub-category-wrapper'); const subContainer = document.getElementById('sub-category-container');
+    const parentContainer = document.getElementById('parent-category-container');
+    const subWrapper = document.getElementById('sub-category-wrapper');
+    const subContainer = document.getElementById('sub-category-container');
     const submitBtnEl = document.getElementById('submit-btn-el');
 
-    // === ĐỒNG BỘ MÚI GIỜ VIỆT NAM ===
     const todayVN = getVNDate();
     dateInput.value = todayVN;
     updateDateDayLabel(todayVN);
     filterOnlyMonth.value = todayVN.split('-')[1];
     filterOnlyYear.value = todayVN.split('-')[0];
-    // Mặc định range: đầu tháng → hôm nay
     filterTimeMode.value = 'range';
     boxFilterMonth.style.display = 'none';
     boxFilterRange.style.display = 'flex';
@@ -612,34 +483,21 @@
 
     let transactions = JSON.parse(localStorage.getItem('family_excel_tab_v14')) || [];
 
-    // === HÀM LOẠI BỎ DẤU TIẾNG VIỆT ĐỂ TÌM KIẾM CHÍNH XÁC ===
     function removeVietnameseTones(str) {
-        if (!str) return "";
-        return str
-            .normalize("NFD")
-            .replace(/[̀-ͯ]/g, "")
-            .replace(/Đ/g, "D")
-            .replace(/đ/g, "d")
-            .toLowerCase();
+        if (!str) return '';
+        return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/Đ/g,'D').replace(/đ/g,'d').toLowerCase();
     }
-
     function updateDateDayLabel(dateStr) {
         const el = document.getElementById('date-day-label');
         if (!dateStr) { el.innerText = ''; return; }
         const days = ['Chủ Nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'];
         const d = new Date(dateStr);
-        if (dateStr === getVNDate()) {
-            el.innerText = `${days[d.getDay()]} — Hôm nay`;
-        } else if (dateStr === getYesterdaysDate()) {
-            el.innerText = `${days[d.getDay()]} — Hôm qua`;
-        } else {
-            el.innerText = days[d.getDay()];
-        }
+        if (dateStr === getVNDate()) el.innerText = `${days[d.getDay()]} — Hôm nay`;
+        else if (dateStr === getYesterdayVN()) el.innerText = `${days[d.getDay()]} — Hôm qua`;
+        else el.innerText = days[d.getDay()];
     }
-
     function onSearchInput() {
-        const btn = document.getElementById('search-clear-btn');
-        btn.style.display = searchKeyword.value.length > 0 ? 'block' : 'none';
+        document.getElementById('search-clear-btn').style.display = searchKeyword.value.length > 0 ? 'block' : 'none';
         init();
     }
     function clearSearch() {
@@ -647,191 +505,156 @@
         document.getElementById('search-clear-btn').style.display = 'none';
         init();
     }
-
-    function switchSheet(sheetId, tabElement) {
-        document.querySelectorAll('.excel-sheet').forEach(sheet => sheet.classList.remove('active-sheet'));
-        document.querySelectorAll('.excel-tab').forEach(tab => tab.classList.remove('active-tab'));
+    function switchSheet(sheetId, tabEl) {
+        document.querySelectorAll('.excel-sheet').forEach(s => s.classList.remove('active-sheet'));
+        document.querySelectorAll('.excel-tab').forEach(t => t.classList.remove('active-tab'));
         document.getElementById(sheetId).classList.add('active-sheet');
-        tabElement.classList.add('active-tab');
-        if(sheetId === 'sheet-report') init();
-        if(sheetId === 'sheet-settings') { updateParentSelectConfig(); renderConfigTagsList(); }
+        tabEl.classList.add('active-tab');
+        if (sheetId === 'sheet-report') init();
+        if (sheetId === 'sheet-settings') { updateParentSelectConfig(); renderConfigTagsList(); }
     }
-
     function syncFilterMonthAndYear(dateStr) {
-        if(dateStr) { 
-            const [year, month] = dateStr.split('-'); 
-            filterOnlyMonth.value = month; 
-            filterOnlyYear.value = year; 
-        }
+        if (dateStr) { const [y,m] = dateStr.split('-'); filterOnlyMonth.value = m; filterOnlyYear.value = y; }
         init();
     }
-
     function toggleTimeMode() {
-        if(filterTimeMode.value === 'month') {
-            boxFilterMonth.style.display = 'flex';
-            boxFilterRange.style.display = 'none';
-        } else {
-            boxFilterMonth.style.display = 'none';
-            boxFilterRange.style.display = 'flex';
-        }
+        if (filterTimeMode.value === 'month') { boxFilterMonth.style.display = 'flex'; boxFilterRange.style.display = 'none'; }
+        else { boxFilterMonth.style.display = 'none'; boxFilterRange.style.display = 'flex'; }
         init();
     }
-
     function toggleChartVisibility() {
-        if(chartWrapperBox.style.display === 'block') {
-            chartWrapperBox.style.display = 'none';
-            btnToggleChart.innerText = "🙉 Hiện biểu đồ";
-        } else {
-            chartWrapperBox.style.display = 'block';
-            btnToggleChart.innerText = "🙈 Ẩn biểu đồ";
-            init(); 
-        }
+        if (chartWrapperBox.style.display === 'block') { chartWrapperBox.style.display = 'none'; btnToggleChart.innerText = '👁️ Hiện biểu đồ'; }
+        else { chartWrapperBox.style.display = 'block'; btnToggleChart.innerText = '🙈 Ẩn biểu đồ'; init(); }
     }
-
-    function checkAmountHighlight() { if (amountInput.value !== "") amountInput.classList.add('has-value'); else amountInput.classList.remove('has-value'); }
-    
+    function checkAmountHighlight() { if (amountInput.value !== '') amountInput.classList.add('has-value'); else amountInput.classList.remove('has-value'); }
     function formatCurrencyInput(input) {
-        let value = input.value.replace(/\D/g, ""); let numValue = parseInt(value, 10) || 0;
-        if (numValue > MAX_AMOUNT) { alert("Không vượt quá 10 tỷ VNĐ!"); numValue = MAX_AMOUNT; }
-        input.value = numValue !== 0 ? numValue.toLocaleString('en-US') : ""; checkAmountHighlight();
+        let v = input.value.replace(/\D/g,''); let n = parseInt(v,10)||0;
+        if (n > MAX_AMOUNT) { alert('Không vượt quá 10 tỷ!'); n = MAX_AMOUNT; }
+        input.value = n !== 0 ? n.toLocaleString('en-US') : ''; checkAmountHighlight();
     }
-
-    function getCleanAmount(valueStr) { return parseInt(valueStr.replace(/[^0-9]/g, ""), 10) || 0; }
-    
-    function quickAddAmount(value) { 
-        let currentAmount = getCleanAmount(amountInput.value); 
-        let newAmount = currentAmount + value; 
-        if (newAmount > MAX_AMOUNT) newAmount = MAX_AMOUNT; 
-        amountInput.value = newAmount.toLocaleString('en-US'); checkAmountHighlight(); 
+    function getCleanAmount(s) { return parseInt(s.replace(/[^0-9]/g,''),10)||0; }
+    function quickAddAmount(v) {
+        let n = getCleanAmount(amountInput.value) + v;
+        if (n > MAX_AMOUNT) n = MAX_AMOUNT;
+        amountInput.value = n.toLocaleString('en-US'); checkAmountHighlight();
     }
-    
-    function clearAmountInput() { amountInput.value = ""; checkAmountHighlight(); }
+    function clearAmountInput() { amountInput.value = ''; checkAmountHighlight(); }
     function updateCharCount(input) { charCounter.innerText = `${input.value.length} / 70 ký tự`; }
 
     function renderParentCategories() {
-        parentContainer.innerHTML = ''; const items = categoryTree[currentType] || [];
+        parentContainer.innerHTML = '';
+        const items = categoryTree[currentType] || [];
         items.forEach((item, idx) => {
             const btn = document.createElement('button'); btn.type = 'button'; btn.innerText = item.parent;
             btn.onclick = () => {
-                selectedParent = item.parent; Array.from(parentContainer.children).forEach(b => b.style.cssText = "background:white; color:black;");
-                btn.style.cssText = currentType === 'expense' ? "background:var(--expense-color); color:white;" : "background:var(--income-color); color:white;";
+                selectedParent = item.parent;
+                Array.from(parentContainer.children).forEach(b => b.style.cssText = '');
+                btn.style.cssText = currentType === 'expense' ? 'background:var(--expense-color);color:white;' : 'background:var(--income-color);color:white;';
                 renderSubCategories(item.parent);
             };
-            parentContainer.appendChild(btn); if(idx === 0) btn.click();
+            parentContainer.appendChild(btn); if (idx === 0) btn.click();
         });
-        if(items.length === 0) { subWrapper.style.display = 'none'; selectedParent = ''; selectedSub = ''; }
+        if (items.length === 0) { subWrapper.style.display = 'none'; selectedParent = ''; selectedSub = ''; }
     }
 
     const notePlaceholders = {
-        'Ăn sáng': 'VD: bánh mì, phở, xôi...',
-        'Ăn trưa': 'VD: cơm văn phòng, bún...',
-        'Ăn tối': 'VD: cơm nhà, lẩu, nướng...',
-        'Cà phê': 'VD: cf sáng, highlands...',
-        'Trà sữa': 'VD: gong cha, the alley...',
-        'Đổ xăng': 'VD: đổ 50k, đầy bình...',
-        'Sửa xe': 'VD: vá lốp, thay nhớt...',
-        'Tiền thuê': 'VD: tháng 6, phòng trọ...',
-        'Tiền điện': 'VD: tháng 6, 150 số...',
-        'Tiền nước': 'VD: tháng 6...',
-        'Internet': 'VD: gia hạn tháng 6...',
-        'Lương chính': 'VD: lương tháng 6...',
-        'Làm thêm': 'VD: OT cuối tuần...',
-        'Thưởng lễ Tết': 'VD: thưởng 30/4...',
+        'Ăn sáng':'VD: bánh mì, phở, xôi...','Ăn trưa':'VD: cơm văn phòng, bún...',
+        'Ăn tối':'VD: cơm nhà, lẩu, nướng...','Cà phê':'VD: cf sáng, highlands...',
+        'Trà sữa':'VD: gong cha, the alley...','Đổ xăng':'VD: đổ 50k, đầy bình...',
+        'Sửa xe':'VD: vá lốp, thay nhớt...','Tiền thuê':'VD: tháng 6, phòng trọ...',
+        'Tiền điện':'VD: tháng 6, 150 số...','Tiền nước':'VD: tháng 6...',
+        'Internet':'VD: gia hạn tháng 6...','Lương chính':'VD: lương tháng 6...',
+        'Làm thêm':'VD: OT cuối tuần...','Thưởng lễ Tết':'VD: thưởng 30/4...',
     };
-
     function renderSubCategories(parentName) {
-        subContainer.innerHTML = ''; const found = (categoryTree[currentType] || []).find(i => i.parent === parentName);
+        subContainer.innerHTML = '';
+        const found = (categoryTree[currentType]||[]).find(i => i.parent === parentName);
         const subs = found ? found.subs : [];
         if (subs && subs.length > 0) {
             subWrapper.style.display = 'block';
             subs.forEach((sCat, idx) => {
                 const btn = document.createElement('button'); btn.type = 'button'; btn.innerText = sCat;
                 btn.onclick = () => {
-                    selectedSub = sCat; Array.from(subContainer.children).forEach(b => b.style.cssText = "background:white; color:black;");
-                    btn.style.cssText = currentType === 'expense' ? "background:var(--expense-color); color:white;" : "background:var(--income-color); color:white;";
-                    // Cập nhật placeholder ghi chú theo danh mục
-                    const hint = notePlaceholders[sCat] || notePlaceholders[parentName] || 'Ghi chú thêm...';
-                    textInput.placeholder = hint;
+                    selectedSub = sCat;
+                    Array.from(subContainer.children).forEach(b => b.style.cssText = '');
+                    btn.style.cssText = currentType === 'expense' ? 'background:var(--expense-color);color:white;' : 'background:var(--income-color);color:white;';
+                    textInput.placeholder = notePlaceholders[sCat] || notePlaceholders[parentName] || 'Ghi chú thêm...';
                 };
-                subContainer.appendChild(btn); if(idx === 0) btn.click();
+                subContainer.appendChild(btn); if (idx === 0) btn.click();
             });
         } else {
             subWrapper.style.display = 'none'; selectedSub = '';
-            const hint = notePlaceholders[parentName] || 'Ghi chú thêm...';
-            textInput.placeholder = hint;
+            textInput.placeholder = notePlaceholders[parentName] || 'Ghi chú thêm...';
         }
     }
-
     function setType(type) {
         currentType = type;
-        if(type === 'expense') { document.getElementById('btn-expense').className = "type-btn expense-active"; document.getElementById('btn-income').className = "type-btn"; } 
-        else { document.getElementById('btn-income').className = "type-btn income-active"; document.getElementById('btn-expense').className = "type-btn"; }
+        if (type === 'expense') { document.getElementById('btn-expense').className = 'type-btn expense-active'; document.getElementById('btn-income').className = 'type-btn'; }
+        else { document.getElementById('btn-income').className = 'type-btn income-active'; document.getElementById('btn-expense').className = 'type-btn'; }
         renderParentCategories();
     }
-
     document.getElementById('btn-expense').onclick = () => setType('expense');
     document.getElementById('btn-income').onclick = () => setType('income');
 
     function updateParentSelectConfig() {
-        const type = document.getElementById('setup-type-sub').value; const select = document.getElementById('setup-select-parent');
+        const type = document.getElementById('setup-type-sub').value;
+        const select = document.getElementById('setup-select-parent');
         select.innerHTML = '';
-        (categoryTree[type] || []).forEach(item => {
+        (categoryTree[type]||[]).forEach(item => {
             const opt = document.createElement('option'); opt.value = item.parent; opt.innerText = item.parent; select.appendChild(opt);
         });
     }
-
     function addNewParentCategory() {
-        const type = document.getElementById('setup-type-parent').value; const name = document.getElementById('setup-new-parent').value.trim();
-        if(!name) return alert("Nhập tên danh mục chính!");
-        if((categoryTree[type] || []).some(i => i.parent === name)) return alert("Danh mục này đã tồn tại!");
-        const miscIdx = categoryTree[type].findIndex(i => i.parent === "Mục khác");
-        if(miscIdx !== -1) { categoryTree[type].splice(miscIdx, 0, { parent: name, subs: ["Mục khác"] }); } 
-        else { categoryTree[type].push({ parent: name, subs: ["Mục khác"] }); }
+        const type = document.getElementById('setup-type-parent').value;
+        const name = document.getElementById('setup-new-parent').value.trim();
+        if (!name) return alert('Nhập tên danh mục chính!');
+        if ((categoryTree[type]||[]).some(i => i.parent === name)) return alert('Danh mục đã tồn tại!');
+        const miscIdx = categoryTree[type].findIndex(i => i.parent === 'Mục khác');
+        if (miscIdx !== -1) categoryTree[type].splice(miscIdx, 0, { parent: name, subs: ['Mục khác'] });
+        else categoryTree[type].push({ parent: name, subs: ['Mục khác'] });
         document.getElementById('setup-new-parent').value = ''; saveCategoryTree(); updateParentSelectConfig(); renderConfigTagsList();
     }
-
     function addNewSubCategory() {
-        const type = document.getElementById('setup-type-sub').value; const parentName = document.getElementById('setup-select-parent').value; const name = document.getElementById('setup-new-sub').value.trim();
-        if(!parentName) return alert("Vui lòng tạo danh mục chính trước!");
-        if(!name) return alert("Nhập tên mục con!");
-        const found = categoryTree[type].find(i => i.parent === parentName); if(!found) return;
-        if(found.subs.includes(name)) return alert("Mục con này đã có!");
-        const miscIdx = found.subs.indexOf("Mục khác");
-        if(miscIdx !== -1) { found.subs.splice(miscIdx, 0, name); } else { found.subs.push(name); }
+        const type = document.getElementById('setup-type-sub').value;
+        const parentName = document.getElementById('setup-select-parent').value;
+        const name = document.getElementById('setup-new-sub').value.trim();
+        if (!parentName) return alert('Vui lòng tạo danh mục chính trước!');
+        if (!name) return alert('Nhập tên mục con!');
+        const found = categoryTree[type].find(i => i.parent === parentName); if (!found) return;
+        if (found.subs.includes(name)) return alert('Mục con này đã có!');
+        const miscIdx = found.subs.indexOf('Mục khác');
+        if (miscIdx !== -1) found.subs.splice(miscIdx, 0, name); else found.subs.push(name);
         document.getElementById('setup-new-sub').value = ''; saveCategoryTree(); renderConfigTagsList();
     }
-
     function removeParentCat(type, name) {
-        if(confirm(`[CẢNH BÁO LẦN 1] Xóa mục chính "${name}" sẽ xóa toàn bộ mục con bên trong?`)) {
-            if(confirm(`[CẢNH BÁO LẦN 2] Bạn chắc chắn chứ? Hành động này sẽ không thể khôi phục!`)) {
-                categoryTree[type] = categoryTree[type].filter(i => i.parent !== name); saveCategoryTree(); updateParentSelectConfig(); renderConfigTagsList();
-            }
+        if (confirm(`Xóa danh mục "${name}" và toàn bộ mục con?`)) {
+            categoryTree[type] = categoryTree[type].filter(i => i.parent !== name);
+            saveCategoryTree(); updateParentSelectConfig(); renderConfigTagsList();
         }
     }
-
     function removeSubCat(type, parentName, subName) {
-        if(confirm(`[CẢNH BÁO LẦN 1] Xóa mục con "${subName}"?`)) {
-            if(confirm(`[CẢNH BÁO LẦN 2] Xác nhận xóa mục con này?`)) {
-                const found = categoryTree[type].find(i => i.parent === parentName);
-                if(found) { found.subs = found.subs.filter(s => s !== subName); saveCategoryTree(); renderConfigTagsList(); }
-            }
+        if (confirm(`Xóa mục con "${subName}"?`)) {
+            const found = categoryTree[type].find(i => i.parent === parentName);
+            if (found) { found.subs = found.subs.filter(s => s !== subName); saveCategoryTree(); renderConfigTagsList(); }
         }
     }
-
     function renderConfigTagsList() {
-        const type = document.getElementById('setup-view-type').value; const area = document.getElementById('config-tags-display-area'); area.innerHTML = '';
-        (categoryTree[type] || []).forEach((item, pIdx) => {
-            const pTag = document.createElement('div'); pTag.className = "cat-tag"; pTag.style.background = "#cbd5e1"; pTag.style.fontWeight = "bold"; pTag.draggable = true; pTag.dataset.type = "parent"; pTag.dataset.pidx = pIdx;
+        const type = document.getElementById('setup-view-type').value;
+        const area = document.getElementById('config-tags-display-area'); area.innerHTML = '';
+        (categoryTree[type]||[]).forEach((item, pIdx) => {
+            const pTag = document.createElement('div'); pTag.className = 'cat-tag';
+            pTag.style.cssText = 'background:#cbd5e1;font-weight:bold;'; pTag.draggable = true;
+            pTag.dataset.type = 'parent'; pTag.dataset.pidx = pIdx;
             pTag.innerHTML = `📁 ${item.parent} <span onclick="removeParentCat('${type}','${item.parent}')">❌</span>`;
             setupDragAndDropEvents(pTag); area.appendChild(pTag);
             item.subs.forEach((s, sIdx) => {
-                const sTag = document.createElement('div'); sTag.className = "cat-tag"; sTag.draggable = true; sTag.dataset.type = "sub"; sTag.dataset.pidx = pIdx; sTag.dataset.sidx = sIdx;
+                const sTag = document.createElement('div'); sTag.className = 'cat-tag'; sTag.draggable = true;
+                sTag.dataset.type = 'sub'; sTag.dataset.pidx = pIdx; sTag.dataset.sidx = sIdx;
                 sTag.innerHTML = `↳ ${s} <span onclick="removeSubCat('${type}','${item.parent}','${s}')">×</span>`;
                 setupDragAndDropEvents(sTag); area.appendChild(sTag);
             });
         });
     }
-
     let dragSrcEl = null;
     function setupDragAndDropEvents(el) {
         el.addEventListener('dragstart', function(e) { dragSrcEl = this; this.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
@@ -840,374 +663,302 @@
         el.addEventListener('drop', function(e) {
             e.preventDefault(); e.stopPropagation();
             if (dragSrcEl !== this) {
-                const type = document.getElementById('setup-view-type').value; const srcData = dragSrcEl.dataset; const targetData = this.dataset;
-                if(srcData.type === 'parent' && targetData.type === 'parent') {
-                    const sIdx = parseInt(srcData.pidx); const tIdx = parseInt(targetData.pidx);
-                    const temp = categoryTree[type][sIdx]; categoryTree[type].splice(sIdx, 1); categoryTree[type].splice(tIdx, 0, temp);
+                const type = document.getElementById('setup-view-type').value;
+                const src = dragSrcEl.dataset, tgt = this.dataset;
+                if (src.type === 'parent' && tgt.type === 'parent') {
+                    const si = parseInt(src.pidx), ti = parseInt(tgt.pidx);
+                    const temp = categoryTree[type][si]; categoryTree[type].splice(si,1); categoryTree[type].splice(ti,0,temp);
                     saveCategoryTree(); renderConfigTagsList();
-                } else if (srcData.type === 'sub' && targetData.type === 'sub' && srcData.pidx === targetData.pidx) {
-                    const pIdx = parseInt(srcData.pidx); const sIdx = parseInt(srcData.sidx); const tIdx = parseInt(targetData.sidx); const arr = categoryTree[type][pIdx].subs;
-                    const temp = arr[sIdx]; arr.splice(sIdx, 1); arr.splice(tIdx, 0, temp);
+                } else if (src.type === 'sub' && tgt.type === 'sub' && src.pidx === tgt.pidx) {
+                    const pi = parseInt(src.pidx), si = parseInt(src.sidx), ti = parseInt(tgt.sidx);
+                    const arr = categoryTree[type][pi].subs;
+                    const temp = arr[si]; arr.splice(si,1); arr.splice(ti,0,temp);
                     saveCategoryTree(); renderConfigTagsList();
                 }
             }
         });
     }
 
-    function calculatePeakExpenseDay(filteredTransactions) {
-        const expenseTrans = filteredTransactions.filter(t => t.type === 'expense');
-        if (expenseTrans.length === 0) { document.getElementById('peak-expense-day').innerText = "Chưa có dữ liệu chi"; return; }
-        const dailyMap = {}; expenseTrans.forEach(t => { dailyMap[t.date] = (dailyMap[t.date] || 0) + t.amount; });
-        let peakDate = ""; let maxAmount = 0;
-        for (const d in dailyMap) { if (dailyMap[d] > maxAmount) { maxAmount = dailyMap[d]; peakDate = d; } }
-        document.getElementById('peak-expense-day').innerText = `${peakDate.split('-').reverse().join('/')} (${maxAmount.toLocaleString('vi-VN')}đ)`;
+    function calculatePeakExpenseDay(ft) {
+        const exp = ft.filter(t => t.type === 'expense');
+        if (!exp.length) { document.getElementById('peak-expense-day').innerText = 'Chưa có dữ liệu chi'; return; }
+        const map = {}; exp.forEach(t => { map[t.date] = (map[t.date]||0) + t.amount; });
+        let peak = '', max = 0;
+        for (const d in map) { if (map[d] > max) { max = map[d]; peak = d; } }
+        const [y,m,d] = peak.split('-');
+        document.getElementById('peak-expense-day').innerText = `${d}/${m} (${max.toLocaleString('vi-VN')}đ)`;
     }
 
     function init() {
-        list.innerHTML = ''; 
+        list.innerHTML = '';
         let filtered = [];
-        
-        const keywordClean = removeVietnameseTones(searchKeyword.value.trim());
-
-        // 1. LỌC THEO THỜI GIAN
+        const kw = removeVietnameseTones(searchKeyword.value.trim());
         if (filterTimeMode.value === 'month') {
-            const targetMonthStr = `${filterOnlyYear.value}-${filterOnlyMonth.value}`;
-            filtered = transactions.filter(t => t.date.substring(0, 7) === targetMonthStr);
+            const ms = `${filterOnlyYear.value}-${filterOnlyMonth.value}`;
+            filtered = transactions.filter(t => t.date.substring(0,7) === ms);
         } else {
-            const start = filterStartDate.value;
-            const end = filterEndDate.value;
+            const s = filterStartDate.value, e = filterEndDate.value;
             filtered = transactions.filter(t => {
-                if(start && end) return t.date >= start && t.date <= end;
-                if(start) return t.date >= start;
-                if(end) return t.date <= end;
+                if (s && e) return t.date >= s && t.date <= e;
+                if (s) return t.date >= s;
+                if (e) return t.date <= e;
                 return true;
             });
         }
-
-        // 2. LỌC THEO CHỮ KHÔNG DẤU THÔNG MINH
-        if (keywordClean !== "") {
-            filtered = filtered.filter(t => {
-                const parentClean = removeVietnameseTones(t.parentCategory);
-                const subClean = removeVietnameseTones(t.subCategory);
-                const textClean = removeVietnameseTones(t.text || "");
-                return parentClean.includes(keywordClean) || 
-                       subClean.includes(keywordClean) || 
-                       textClean.includes(keywordClean);
-            });
+        if (kw) {
+            filtered = filtered.filter(t =>
+                removeVietnameseTones(t.parentCategory).includes(kw) ||
+                removeVietnameseTones(t.subCategory).includes(kw) ||
+                removeVietnameseTones(t.text||'').includes(kw)
+            );
         }
-        
         calculatePeakExpenseDay(filtered);
+        filtered.sort((a,b) => b.date !== a.date ? (b.date > a.date ? 1 : -1) : b.id - a.id);
 
-        // 3. SẮP XẾP: ngày mới lên trên, cùng ngày thì giao dịch thêm sau (id lớn hơn) lên trên
-        filtered.sort((a, b) => {
-            if (b.date !== a.date) return b.date > a.date ? 1 : -1;
-            return b.id - a.id;
-        });
-        
-        // 4. XEN KẼ MÀU THEO NGÀY — tính tổng từng ngày trước
         const dailyTotals = {};
         filtered.forEach(t => {
-            if (!dailyTotals[t.date]) dailyTotals[t.date] = { inc: 0, exp: 0 };
+            if (!dailyTotals[t.date]) dailyTotals[t.date] = { inc:0, exp:0 };
             if (t.type === 'income') dailyTotals[t.date].inc += t.amount;
             else dailyTotals[t.date].exp += t.amount;
         });
 
-        let dayBandIndex = -1;
-        let lastDate = null;
+        let dayBandIndex = -1, lastDate = null;
+        const days = ['Chủ Nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'];
 
         filtered.forEach(t => {
-            // Mỗi khi đổi sang ngày mới, chèn nhãn ngày + chuyển band
             if (t.date !== lastDate) {
                 dayBandIndex = (dayBandIndex + 1) % 2;
                 lastDate = t.date;
-
-                const { inc, exp } = dailyTotals[t.date];
+                const {inc, exp} = dailyTotals[t.date];
                 const net = inc - exp;
                 const netColor = net >= 0 ? 'var(--income-color)' : 'var(--expense-color)';
-                const netSign = net >= 0 ? '+' : '';
-
+                const [y,m,d] = t.date.split('-');
+                const dateObj = new Date(t.date);
+                const isToday = t.date === getVNDate();
+                const isYesterday = t.date === getYesterdayVN();
+                let dayLabel = isToday ? `🔴 Hôm nay (${days[dateObj.getDay()]}) ${d}/${m}`
+                             : isYesterday ? `🟠 Hôm qua (${days[dateObj.getDay()]}) ${d}/${m}`
+                             : `${days[dateObj.getDay()]} ${d}/${m}`;
+                let sumHtml = '';
+                if (inc > 0) sumHtml += `<span style="color:var(--income-color);font-size:10px">+${inc.toLocaleString('vi-VN')}</span>`;
+                if (exp > 0) sumHtml += `<span style="color:var(--expense-color);font-size:10px">${inc>0?' / ':''}-${exp.toLocaleString('vi-VN')}</span>`;
+                sumHtml += `<span style="color:${netColor};font-size:10px;font-weight:800;margin-left:4px">(${net>=0?'+':''}${net.toLocaleString('vi-VN')}đ)</span>`;
                 const header = document.createElement('div');
                 header.className = `day-header band-${dayBandIndex}`;
-                const [y, m, d] = t.date.split('-');
-                const dateObj = new Date(t.date);
-                const days = ['Chủ Nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'];
-                const isToday = t.date === getVNDate();
-                const isYesterday = t.date === getYesterdaysDate();
-                let dayLabel = '';
-                if (isToday) {
-                    dayLabel = `🔴 Hôm nay (${days[dateObj.getDay()]}) ${d}/${m}`;
-                } else if (isYesterday) {
-                    dayLabel = `🟠 Hôm qua (${days[dateObj.getDay()]}) ${d}/${m}`;
-                } else {
-                    dayLabel = `${days[dateObj.getDay()]} ${d}/${m}`;}
-
-                let summaryHtml = '';
-                if (inc > 0) summaryHtml += `<span style="color:var(--income-color);font-size:10px">+${inc.toLocaleString('vi-VN')}</span>`;
-                if (exp > 0) summaryHtml += `<span style="color:var(--expense-color);font-size:10px">${inc>0?' / ':''}-${exp.toLocaleString('vi-VN')}</span>`;
-                summaryHtml += `<span style="color:${netColor};font-size:10px;font-weight:800;margin-left:4px">(${netSign}${net.toLocaleString('vi-VN')}đ)</span>`;
-
-                header.innerHTML = `
-                    <span style="font-weight:800">${dayLabel}</span>
-                    <span style="display:flex;align-items:center;gap:2px;flex-wrap:wrap;justify-content:flex-end">${summaryHtml}</span>
-                `;
+                header.innerHTML = `<span style="font-weight:800">${dayLabel}</span><span style="display:flex;align-items:center;gap:2px;flex-wrap:wrap;justify-content:flex-end">${sumHtml}</span>`;
                 list.appendChild(header);
             }
 
             const wrapper = document.createElement('div');
-            wrapper.style.cssText = 'position:relative; margin-bottom:3px; border-radius:8px; overflow:hidden;';
-
-            // Nền đỏ xóa phía sau
+            wrapper.style.cssText = 'position:relative;margin-bottom:3px;border-radius:8px;overflow:hidden;';
             const bgDel = document.createElement('div');
-            bgDel.style.cssText = 'position:absolute;right:0;top:0;bottom:0;width:90px;background:#e74c3c;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:bold;';
+            bgDel.style.cssText = 'position:absolute;right:0;top:0;bottom:0;width:90px;background:#e74c3c;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:bold;cursor:pointer;border-radius:0 8px 8px 0;user-select:none;';
             bgDel.innerHTML = '🗑️ Xóa';
             wrapper.appendChild(bgDel);
 
             const li = document.createElement('li');
-            li.classList.add(t.type);
-            li.classList.add(`day-band-${dayBandIndex}`);
-            li.style.cssText = 'margin-bottom:0; border-radius:8px; position:relative; transition:transform 0.2s ease; will-change:transform;';
+            li.classList.add(t.type, `day-band-${dayBandIndex}`);
+            li.style.cssText = 'margin-bottom:0;border-radius:8px;position:relative;transition:transform 0.18s ease;will-change:transform;';
             li.innerHTML = `
-                <div class="info-span">
-                    <strong>${t.parentCategory} → ${t.subCategory}${t.text ? ' ['+t.text+']':''}</strong>
-                </div>
+                <div class="info-span"><strong>${t.parentCategory} → ${t.subCategory}${t.text?' ['+t.text+']':''}</strong></div>
                 <span style="font-weight:600;color:${t.type==='income'?'var(--income-color)':'var(--expense-color)'}">${t.type==='income'?'+':'-'}${t.amount.toLocaleString('vi-VN')}đ</span>
                 <div class="action-btns">
-                    <button class="edit-btn" onclick="openEditModal(${t.id})" title="Sửa">✏️</button>
-                    <button class="delete-btn" onclick="removeTransaction(${t.id})" onclick="triggerDeleteAnimation(t.id, this.closest('li'))" title="Xóa">🗑️</button>
-                </div>
-            `;
+                    <button class="edit-btn" onclick="openEditModal(${t.id})">✏️</button>
+                    <button class="delete-btn" onclick="confirmDelete(${t.id})">🗑️</button>
+                </div>`;
             wrapper.appendChild(li);
-            setupSwipeDelete(li, wrapper, t.id);
+            setupSwipeDelete(li, bgDel, t.id);
             list.appendChild(wrapper);
         });
 
-        const inc = filtered.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
-        const exp = filtered.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
-        const totalIncAll = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
-        const totalExpAll = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
-        
-        document.getElementById('top-balance-val').innerText = (totalIncAll - totalExpAll).toLocaleString('vi-VN') + 'đ';
-        document.getElementById('total-income').innerText = inc.toLocaleString('vi-VN') + 'đ';
-        document.getElementById('total-expense').innerText = exp.toLocaleString('vi-VN') + 'đ';
-        
-        if(chartWrapperBox.style.display === 'block') {
-            updateChart(inc, exp);
-        }
+        const inc = filtered.filter(t=>t.type==='income').reduce((a,t)=>a+t.amount,0);
+        const exp = filtered.filter(t=>t.type==='expense').reduce((a,t)=>a+t.amount,0);
+        const allInc = transactions.filter(t=>t.type==='income').reduce((a,t)=>a+t.amount,0);
+        const allExp = transactions.filter(t=>t.type==='expense').reduce((a,t)=>a+t.amount,0);
+        document.getElementById('top-balance-val').innerText = (allInc-allExp).toLocaleString('vi-VN')+'đ';
+        document.getElementById('total-income').innerText = inc.toLocaleString('vi-VN')+'đ';
+        document.getElementById('total-expense').innerText = exp.toLocaleString('vi-VN')+'đ';
+        if (chartWrapperBox.style.display === 'block') updateChart(inc, exp);
     }
 
     function updateChart(income, expense) {
-        const ctx = document.getElementById('expenseChart').getContext('2d'); if (myChart) myChart.destroy();
-        if (income === 0 && expense === 0) { ctx.clearRect(0,0,300,300); return; }
+        const ctx = document.getElementById('expenseChart').getContext('2d');
+        if (myChart) myChart.destroy();
+        if (!income && !expense) { ctx.clearRect(0,0,300,300); return; }
         myChart = new Chart(ctx, {
-            type: 'bar', data: { labels: ['Thu vs Chi'], datasets: [{ label: 'Thu Nhập', data: [income], backgroundColor: '#2ecc71', borderRadius: 4 }, { label: 'Chi Tiêu', data: [expense], backgroundColor: '#e74c3c', borderRadius: 4 }] },
+            type: 'bar',
+            data: { labels: ['Thu vs Chi'], datasets: [
+                { label: 'Thu Nhập', data: [income], backgroundColor: '#2ecc71', borderRadius: 4 },
+                { label: 'Chi Tiêu', data: [expense], backgroundColor: '#e74c3c', borderRadius: 4 }
+            ]},
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'top' } } }
         });
     }
 
-    form.onsubmit = (e) => {
-        e.preventDefault();
-        const cleanAmount = getCleanAmount(amountInput.value);
-        if (cleanAmount <= 0) return alert('Vui lòng nhập số tiền!');
-        if (!selectedParent) return alert('Vui lòng tạo và chọn danh mục trước khi ghi sổ!');
-
-        if (editingId !== null) {
-            // CHẾ ĐỘ SỬA
-            const idx = transactions.findIndex(t => t.id === editingId);
-            if (idx !== -1) {
-                transactions[idx] = { ...transactions[idx], date: dateInput.value, type: currentType, parentCategory: selectedParent, subCategory: selectedSub || 'Mục khác', amount: cleanAmount, text: textInput.value.trim() };
-                localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions));
-            }
-            cancelEdit();
-            const originalText = submitBtnEl.innerText;
-            submitBtnEl.innerText = '✓ Đã Cập Nhật!'; submitBtnEl.style.background = '#2ecc71';
-            setTimeout(() => { submitBtnEl.innerText = 'Ghi Vào Sổ Hệ Thống'; submitBtnEl.style.background = ''; }, 1200);
-        } else {
-            // CHẾ ĐỘ THÊM MỚI
-            transactions.push({ id: Date.now(), date: dateInput.value, type: currentType, parentCategory: selectedParent, subCategory: selectedSub || 'Mục khác', amount: cleanAmount, text: textInput.value.trim() });
-            localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions));
-            const [year, month] = dateInput.value.split('-');
-            filterOnlyMonth.value = month; filterOnlyYear.value = year;
-            amountInput.value = ''; textInput.value = ''; charCounter.innerText = '0 / 70 ký tự'; checkAmountHighlight();
-            const originalText = submitBtnEl.innerText;
-            submitBtnEl.innerText = '✓ Đã Ghi Thành Công!'; submitBtnEl.style.background = '#2ecc71';
-            setTimeout(() => { submitBtnEl.innerText = originalText; submitBtnEl.style.background = ''; }, 1000);
+    // === SWIPE ĐỂ LỘ NÚT XÓA — phải bấm nút mới xóa, vuốt phải để đóng ===
+    let openSwipeWrapper = null;
+    document.addEventListener('touchstart', e => {
+        if (openSwipeWrapper && !openSwipeWrapper.contains(e.target)) {
+            const li = openSwipeWrapper.querySelector('li');
+            if (li) { li.style.transition = 'transform 0.18s ease'; li.style.transform = 'translateX(0)'; }
+            openSwipeWrapper = null;
         }
-        init();
-    };
+    }, { passive: true });
 
-    // === SWIPE ĐỂ XÓA ===
-    function setupSwipeDelete(li, wrapper, id) {
-        let startX = 0, currentX = 0, swiping = false;
-        const THRESHOLD = 80;
+    function setupSwipeDelete(li, bgDel, id) {
+        const REVEAL = 90;
+        let startX = 0, startY = 0, currentX = 0, moved = false, isScrolling = false;
+        const wrapper = li.parentElement;
+
+        // Bấm vào nền đỏ → xóa
+        bgDel.addEventListener('click', () => {
+            li.style.transition = 'transform 0.18s ease, opacity 0.18s ease';
+            li.style.transform = 'translateX(-100%)'; li.style.opacity = '0';
+            setTimeout(() => removeTransaction(id), 200);
+        });
 
         li.addEventListener('touchstart', e => {
-            startX = e.touches[0].clientX;
-            currentX = 0;
-            swiping = true;
+            if (openSwipeWrapper && openSwipeWrapper !== wrapper) {
+                const prev = openSwipeWrapper.querySelector('li');
+                if (prev) { prev.style.transition = 'transform 0.18s ease'; prev.style.transform = 'translateX(0)'; }
+                openSwipeWrapper = null;
+            }
+            startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+            currentX = 0; moved = false; isScrolling = false;
             li.style.transition = 'none';
         }, { passive: true });
 
         li.addEventListener('touchmove', e => {
-            if (!swiping) return;
-            currentX = e.touches[0].clientX - startX;
+            if (isScrolling) return;
+            const dx = e.touches[0].clientX - startX;
+            const dy = e.touches[0].clientY - startY;
+            if (!moved && Math.abs(dy) > Math.abs(dx) + 4) { isScrolling = true; return; }
+            if (Math.abs(dx) > 4) moved = true;
+            currentX = dx;
+            const alreadyOpen = openSwipeWrapper === wrapper;
             if (currentX < 0) {
-                const move = Math.max(currentX, -THRESHOLD - 20);
+                // Vuốt trái — lộ nút xóa
+                const base = alreadyOpen ? -REVEAL : 0;
+                const move = Math.max(base + currentX, -REVEAL);
+                li.style.transform = `translateX(${move}px)`;
+            } else if (alreadyOpen && currentX > 0) {
+                // Đang mở, vuốt phải → đóng
+                const move = Math.min(-REVEAL + currentX, 0);
                 li.style.transform = `translateX(${move}px)`;
             }
         }, { passive: true });
 
         li.addEventListener('touchend', () => {
-            if (!swiping) return;
-            swiping = false;
-            if (currentX < -THRESHOLD) {
-                li.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
-                li.style.transform = 'translateX(-100%)';
-                li.style.opacity = '0';
-                triggerDeleteAnimation(id, li);
+            if (!moved) return;
+            li.style.transition = 'transform 0.18s ease';
+            const alreadyOpen = openSwipeWrapper === wrapper;
+            if (alreadyOpen) {
+                // Vuốt phải đủ → đóng
+                if (currentX > REVEAL / 2) { li.style.transform = 'translateX(0)'; openSwipeWrapper = null; }
+                else { li.style.transform = `translateX(-${REVEAL}px)`; }
             } else {
-                li.style.transition = 'transform 0.2s ease';
-                li.style.transform = 'translateX(0)';
+                // Vuốt trái đủ → lộ nút
+                if (currentX < -REVEAL / 2) { li.style.transform = `translateX(-${REVEAL}px)`; openSwipeWrapper = wrapper; }
+                else { li.style.transform = 'translateX(0)'; }
             }
         });
     }
 
-    function triggerDeleteAnimation(id, li) {
-        if (!li) return;
-        li.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
-        li.style.transform = 'translateX(-100%)';
-        li.style.opacity = '0';
-        setTimeout(() => {
-            removeTransaction(id);
-        }, 220);
+    function confirmDelete(id) {
+        if (confirm('Xóa giao dịch này?')) removeTransaction(id);
     }
-
     function removeTransaction(id) {
         transactions = transactions.filter(t => t.id !== id);
         localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions));
         init();
     }
 
-    // === SỬA GIAO DỊCH — chuyển về tab Nhập Liệu, điền sẵn form ===
+    // === SỬA GIAO DỊCH ===
     let editingId = null;
-
     function openEditModal(id) {
-        const t = transactions.find(t => t.id === id);
-        if (!t) return;
+        const t = transactions.find(t => t.id === id); if (!t) return;
         editingId = t.id;
-
-        // Chuyển sang tab Nhập Liệu
         const inputTab = document.querySelector('.excel-tab');
         switchSheet('sheet-input', inputTab);
-
-        // Điền thông tin vào form
         setType(t.type);
-        dateInput.value = t.date;
-        updateDateDayLabel(t.date);
-        amountInput.value = t.amount.toLocaleString('en-US');
-        checkAmountHighlight();
-        textInput.value = t.text || '';
-        charCounter.innerText = `${(t.text||'').length} / 70 ký tự`;
-
-        // Chọn đúng danh mục chính
-        const parentBtns = Array.from(parentContainer.children);
-        const matchParent = parentBtns.find(b => b.innerText === t.parentCategory);
+        dateInput.value = t.date; updateDateDayLabel(t.date);
+        amountInput.value = t.amount.toLocaleString('en-US'); checkAmountHighlight();
+        textInput.value = t.text || ''; charCounter.innerText = `${(t.text||'').length} / 70 ký tự`;
+        const matchParent = Array.from(parentContainer.children).find(b => b.innerText === t.parentCategory);
         if (matchParent) {
             matchParent.click();
-            // Chờ renderSubCategories xong rồi chọn danh mục con
             setTimeout(() => {
-                const subBtns = Array.from(subContainer.children);
-                const matchSub = subBtns.find(b => b.innerText === t.subCategory);
+                const matchSub = Array.from(subContainer.children).find(b => b.innerText === t.subCategory);
                 if (matchSub) matchSub.click();
             }, 50);
         }
-
-        // Đổi nút submit thành "Cập Nhật" và hiện nút huỷ
-        submitBtnEl.innerText = '💾 Cập Nhật Giao Dịch';
-        submitBtnEl.style.background = '#d97706';
+        submitBtnEl.innerText = '💾 Cập Nhật Giao Dịch'; submitBtnEl.style.background = '#d97706';
         document.getElementById('cancel-edit-btn').style.display = 'block';
     }
-
     function cancelEdit() {
         editingId = null;
-        submitBtnEl.innerText = 'Ghi Vào Sổ Hệ Thống';
-        submitBtnEl.style.background = '';
+        submitBtnEl.innerText = 'Ghi Vào Sổ Hệ Thống'; submitBtnEl.style.background = '';
         document.getElementById('cancel-edit-btn').style.display = 'none';
-        amountInput.value = ''; textInput.value = '';
-        charCounter.innerText = '0 / 70 ký tự'; checkAmountHighlight();
-        setType('expense');
-        dateInput.value = getVNDate(); updateDateDayLabel(getVNDate());
+        amountInput.value = ''; textInput.value = ''; charCounter.innerText = '0 / 70 ký tự'; checkAmountHighlight();
+        setType('expense'); dateInput.value = getVNDate(); updateDateDayLabel(getVNDate());
     }
 
-    function closeEditModal() { cancelEdit(); }
-    function saveEdit() {}
-    document.getElementById('edit-modal').addEventListener('click', function(e) {
-        if (e.target === this) closeEditModal();
-    });
-
-    // === XUẤT JSON GIAO DỊCH ===
-    function exportJSON() {
-        if (transactions.length === 0) return alert('Chưa có dữ liệu để xuất!');
-        const json = JSON.stringify(transactions, null, 2);
-        const blob = new Blob([json], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        const d = new Date().toLocaleDateString('fr-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
-        a.href = url;
-        a.download = `so-thu-chi-backup-${d}.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-    }
-
-    
-function importJSON(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-        try {
-            const importedData = JSON.parse(e.target.result);
-
-            if (!Array.isArray(importedData)) {
-                alert("File JSON không hợp lệ!");
-                return;
-            }
-
-            if (!confirm(`Tìm thấy ${importedData.length} giao dịch.
-Bạn có muốn ghi đè dữ liệu hiện tại không?`)) {
-                return;
-            }
-
-            transactions = importedData;
+    form.onsubmit = e => {
+        e.preventDefault();
+        const amt = getCleanAmount(amountInput.value);
+        if (amt <= 0) return alert('Vui lòng nhập số tiền!');
+        if (!selectedParent) return alert('Vui lòng chọn danh mục!');
+        if (editingId !== null) {
+            const idx = transactions.findIndex(t => t.id === editingId);
+            if (idx !== -1) transactions[idx] = { ...transactions[idx], date: dateInput.value, type: currentType, parentCategory: selectedParent, subCategory: selectedSub||'Mục khác', amount: amt, text: textInput.value.trim() };
             localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions));
-            init();
-            alert("✅ Nhập dữ liệu thành công!");
-        } catch(err) {
-            alert("❌ File JSON không đúng định dạng!");
+            cancelEdit();
+            submitBtnEl.innerText = '✓ Đã Cập Nhật!'; submitBtnEl.style.background = '#2ecc71';
+            setTimeout(() => { submitBtnEl.innerText = 'Ghi Vào Sổ Hệ Thống'; submitBtnEl.style.background = ''; }, 1200);
+        } else {
+            transactions.push({ id: Date.now(), date: dateInput.value, type: currentType, parentCategory: selectedParent, subCategory: selectedSub||'Mục khác', amount: amt, text: textInput.value.trim() });
+            localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions));
+            const [y,m] = dateInput.value.split('-'); filterOnlyMonth.value = m; filterOnlyYear.value = y;
+            amountInput.value = ''; textInput.value = ''; charCounter.innerText = '0 / 70 ký tự'; checkAmountHighlight();
+            submitBtnEl.innerText = '✓ Đã Ghi!'; submitBtnEl.style.background = '#2ecc71';
+            setTimeout(() => { submitBtnEl.innerText = 'Ghi Vào Sổ Hệ Thống'; submitBtnEl.style.background = ''; }, 1000);
         }
+        init();
     };
 
-    reader.readAsText(file);
-}
+    // === XUẤT / NHẬP JSON ===
+    function exportJSON() {
+        if (!transactions.length) return alert('Chưa có dữ liệu!');
+        const blob = new Blob([JSON.stringify(transactions, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob); a.download = `so-thu-chi-${getVNDate()}.json`; a.click();
+    }
+    document.getElementById('importJsonFile').addEventListener('change', function(e) {
+        const file = e.target.files[0]; if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            try {
+                const data = JSON.parse(ev.target.result);
+                if (!Array.isArray(data)) { alert('File không hợp lệ!'); return; }
+                if (!confirm(`Tìm thấy ${data.length} giao dịch. Ghi đè dữ liệu hiện tại?`)) return;
+                transactions = data;
+                localStorage.setItem('family_excel_tab_v14', JSON.stringify(transactions));
+                init(); alert('✅ Nhập thành công!');
+            } catch { alert('❌ File JSON lỗi!'); }
+        };
+        reader.readAsText(file); this.value = '';
+    });
 
-
-// === DARK MODE ===
+    // === DARK MODE ===
     function applyDarkMode(isDark) {
         document.body.classList.toggle('dark-mode', isDark);
         document.getElementById('dark-toggle-btn').innerText = isDark ? '☀️' : '🌙';
         localStorage.setItem('dark_mode_v1', isDark ? '1' : '0');
     }
-    function toggleDarkMode() {
-        applyDarkMode(!document.body.classList.contains('dark-mode'));
-    }
-    // Khôi phục trạng thái dark mode đã lưu
+    function toggleDarkMode() { applyDarkMode(!document.body.classList.contains('dark-mode')); }
     if (localStorage.getItem('dark_mode_v1') === '1') applyDarkMode(true);
 
-    const importJsonFile = document.getElementById('importJsonFile');
-importJsonFile.addEventListener('change', importJSON);
-
-setType('expense'); init();
+    setType('expense'); init();
 </script>
 </body>
 </html>
