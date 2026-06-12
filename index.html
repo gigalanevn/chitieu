@@ -229,8 +229,11 @@
                     <input type="text" id="text" maxlength="70" placeholder="Ghi chú thêm..." oninput="updateCharCount(this)" />
                     <span class="char-count" id="char-counter">0 / 70 ký tự</span>
                 </div>
+                <div id="edit-action-row" style="display:none; gap:8px; margin-top:8px;">
+                    <button type="submit" id="submit-btn-edit" class="submit-btn" style="margin-top:0; flex:1; background:#d97706;">💾 Cập Nhật</button>
+                    <button type="button" onclick="cancelEdit()" style="flex:1; padding:11px; background:#f1f5f9; color:#64748b; border:1px solid #cbd5e1; border-radius:6px; font-size:14px; font-weight:bold;">✕ Huỷ</button>
+                </div>
                 <button type="submit" class="submit-btn" id="submit-btn-el">Ghi Vào Sổ Hệ Thống</button>
-                <button type="button" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none;width:100%;padding:9px;background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;font-weight:bold;margin-top:6px;">✕ Huỷ sửa — Quay lại nhập mới</button>
             </form>
         </div>
 
@@ -830,11 +833,18 @@
         let startX = 0, startY = 0, currentX = 0, moved = false, isScrolling = false;
         const wrapper = li.parentElement;
 
-        // Bấm vào nền đỏ → xóa
+        // Bấm vào nền đỏ → xác nhận rồi xóa
         bgDel.addEventListener('click', () => {
-            li.style.transition = 'transform 0.18s ease, opacity 0.18s ease';
-            li.style.transform = 'translateX(-100%)'; li.style.opacity = '0';
-            setTimeout(() => removeTransaction(id), 200);
+            if (confirm('Xóa giao dịch này?')) {
+                li.style.transition = 'transform 0.18s ease, opacity 0.18s ease';
+                li.style.transform = 'translateX(-100%)'; li.style.opacity = '0';
+                setTimeout(() => removeTransaction(id), 200);
+            } else {
+                // Bấm Huỷ → đóng swipe lại
+                li.style.transition = 'transform 0.18s ease';
+                li.style.transform = 'translateX(0)';
+                openSwipeWrapper = null;
+            }
         });
 
         li.addEventListener('touchstart', e => {
@@ -944,13 +954,14 @@
                 if (matchSub) matchSub.click();
             }, 50);
         }
-        submitBtnEl.innerText = '💾 Cập Nhật Giao Dịch'; submitBtnEl.style.background = '#d97706';
-        document.getElementById('cancel-edit-btn').style.display = 'block';
+        submitBtnEl.style.display = 'none';
+        document.getElementById('edit-action-row').style.display = 'flex';
     }
     function cancelEdit() {
         editingId = null;
+        submitBtnEl.style.display = '';
         submitBtnEl.innerText = 'Ghi Vào Sổ Hệ Thống'; submitBtnEl.style.background = '';
-        document.getElementById('cancel-edit-btn').style.display = 'none';
+        document.getElementById('edit-action-row').style.display = 'none';
         amountInput.value = ''; textInput.value = ''; charCounter.innerText = '0 / 70 ký tự'; checkAmountHighlight();
         setType('expense'); dateInput.value = getVNDate(); updateDateDayLabel(getVNDate());
     }
