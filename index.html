@@ -396,29 +396,21 @@
     function refreshDateIfNeeded() {
         const currentDate = getVNDate();
         const di = document.getElementById('date');
-        const reportSheet = document.getElementById('sheet-report');
-        const isReportOpen = reportSheet.classList.contains('active-sheet');
-
         if (di && di.value !== currentDate) {
-            // Sang ngày mới: cập nhật ô ngày + filter
             di.value = currentDate;
             updateDateDayLabel(currentDate);
             const [y, m] = currentDate.split('-');
             filterOnlyMonth.value = m;
             filterOnlyYear.value = y;
-            if (filterTimeMode.value === 'range') {
-                filterEndDate.value = currentDate;
-            }
-            // Refresh tổng quan (nếu đang mở thì cập nhật luôn, nếu không thì vẫn cần init khi mở sau)
-            if (isReportOpen) init();
-        } else if (isReportOpen) {
-            // Cùng ngày nhưng đang ở Tổng Quan (chuyển tab về) → refresh để nhãn hôm nay đúng
-            init();
+            if (filterTimeMode.value === 'range') filterEndDate.value = currentDate;
+            const reportSheet = document.getElementById('sheet-report');
+            if (reportSheet.classList.contains('active-sheet')) init();
         }
     }
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') refreshDateIfNeeded();
     });
+    window.addEventListener('focus', refreshDateIfNeeded);
     setInterval(refreshDateIfNeeded, 60000);
 
     const defaultCategoryTree = {
