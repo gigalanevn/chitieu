@@ -400,11 +400,15 @@
             di.value = currentDate;
             updateDateDayLabel(currentDate);
             const [y, m] = currentDate.split('-');
-            filterOnlyMonth.value = m;
-            filterOnlyYear.value = y;
-            if (filterTimeMode.value === 'range') filterEndDate.value = currentDate;
+            const fom = document.getElementById('filter-only-month');
+            const foy = document.getElementById('filter-only-year');
+            const ftm = document.getElementById('filter-time-mode');
+            const fed = document.getElementById('filter-end-date');
+            if (fom) fom.value = m;
+            if (foy) foy.value = y;
+            if (ftm && ftm.value === 'range' && fed) fed.value = currentDate;
             const reportSheet = document.getElementById('sheet-report');
-            if (reportSheet.classList.contains('active-sheet')) init();
+            if (reportSheet && reportSheet.classList.contains('active-sheet') && typeof init === 'function') init();
         }
     }
     document.addEventListener('visibilitychange', () => {
