@@ -197,7 +197,7 @@
                 <div class="form-compact-group">
                     <div>
                         <label>Ngày giao dịch</label>
-                        <input type="date" id="date" required onchange="syncFilterMonthAndYear(this.value);updateDateDayLabel(this.value)" />
+                        <input type="date" id="date" required onchange="userPickedDate=true;syncFilterMonthAndYear(this.value);updateDateDayLabel(this.value)" />
                         <span id="date-day-label" style="font-size:11px;font-weight:700;color:var(--primary-color);margin-top:3px;display:block;"></span>
                     </div>
                     <div>
@@ -393,23 +393,34 @@
         d.setDate(d.getDate() - 1);
         return d.toLocaleDateString('fr-CA');
     }
+    let userPickedDate = false; // true khi người dùng tự chọn ngày khác trong tab Nhập Liệu
+    let lastKnownDate = getVNDate(); // ngày hệ thống lần kiểm tra trước
+
     function refreshDateIfNeeded() {
         const currentDate = getVNDate();
+        // Chỉ xử lý khi NGÀY HỆ THỐNG thực sự đổi (qua nửa đêm), không phải mỗi lần gọi hàm
+        if (currentDate === lastKnownDate) return;
+        lastKnownDate = currentDate;
+
         const di = document.getElementById('date');
-        if (di && di.value !== currentDate) {
+        // Chỉ tự nhảy ô ngày nhập liệu nếu người dùng CHƯA tự chọn ngày khác
+        if (di && !userPickedDate) {
             di.value = currentDate;
             updateDateDayLabel(currentDate);
-            const [y, m] = currentDate.split('-');
-            const fom = document.getElementById('filter-only-month');
-            const foy = document.getElementById('filter-only-year');
-            const ftm = document.getElementById('filter-time-mode');
-            const fed = document.getElementById('filter-end-date');
-            if (fom) fom.value = m;
-            if (foy) foy.value = y;
-            if (ftm && ftm.value === 'range' && fed) fed.value = currentDate;
-            const reportSheet = document.getElementById('sheet-report');
-            if (reportSheet && reportSheet.classList.contains('active-sheet') && typeof init === 'function') init();
         }
+
+        // Filter tháng/năm và filterEndDate vẫn luôn cập nhật theo ngày mới (đây là tổng quan, không phải nhập liệu)
+        const fom = document.getElementById('filter-only-month');
+        const foy = document.getElementById('filter-only-year');
+        const ftm = document.getElementById('filter-time-mode');
+        const fed = document.getElementById('filter-end-date');
+        const [y, m] = currentDate.split('-');
+        if (fom) fom.value = m;
+        if (foy) foy.value = y;
+        if (ftm && ftm.value === 'range' && fed) fed.value = currentDate;
+
+        const reportSheet = document.getElementById('sheet-report');
+        if (reportSheet && reportSheet.classList.contains('active-sheet') && typeof init === 'function') init();
     }
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
@@ -964,6 +975,7 @@
         document.getElementById('edit-action-row').style.display = 'none';
         amountInput.value = ''; textInput.value = ''; charCounter.innerText = '0 / 70 ký tự'; checkAmountHighlight();
         setType('expense'); dateInput.value = getVNDate(); updateDateDayLabel(getVNDate());
+        userPickedDate = false; // quay lại theo dõi ngày hôm nay tự động
     }
 
     form.onsubmit = e => {
